@@ -54,8 +54,6 @@ For our moodboard, we choose images from the following games.
 
 ![alt text](Images/MonumentValley-5.jpg)
 
-![alt text](Images/MonumentValley-3.jpeg)
-
 ### Oracle Of Suits - Chronocards
 
 ![alt text](Images/OracleofSuitsScene-1.jpg)
@@ -82,3 +80,9 @@ For our moodboard, we choose images from the following games.
 We can integrate the ipad into a house paper structure.
 
 ![alt text](Images/NintendoLabo.jpg)
+
+### Characters
+
+![alt text](Images/LuminoCity-Cat.png)
+
+![alt text](Images/MonumentValley-3.jpeg)
