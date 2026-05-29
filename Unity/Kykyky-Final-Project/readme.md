@@ -3,7 +3,7 @@
 ## Assets List
 
     Assets/
-        |– Models/
+        ⊢ Models/
             |_ Animals
                 |_ Lucky
                 |_ Rokhy
@@ -16,6 +16,9 @@
                 |_ Sofa
                 |_ Window
             |_ Materials (To check if in Unity)
+        |– Scenes
+            |- Level1
+        |– Prefabs
         |_ Yarn
             |_ .YarnProject
             |_ Chapter1.yarn
@@ -41,3 +44,4 @@
                 |_ LuckyWhimper
                 |_ LuckyBreathing
                 |_ HeartSound
+        |_ Scripts
