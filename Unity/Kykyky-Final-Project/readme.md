@@ -21,7 +21,7 @@
             |_ Level1-PartB
         |– Prefabs
         |_ Yarn
-            |_ .YarnProject
+            |_ KyKyKy.YarnProject
             |_ Chapter1.yarn
         |_ Animation / Mocap
             |_ LuckyAnimation
