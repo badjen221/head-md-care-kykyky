@@ -17,7 +17,8 @@
                 |_ Window
             |_ Materials (To check if in Unity)
         |– Scenes
-            |- Level1
+            |_ Level1-PartA
+            |_ Level1-PartB
         |– Prefabs
         |_ Yarn
             |_ .YarnProject
