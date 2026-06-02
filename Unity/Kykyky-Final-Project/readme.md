@@ -39,6 +39,7 @@
             |_ Narrations
             |_ SFX
                 |_ CheekyMiaow
+                |_ CheekyHissing
                 |_ RokhyCrying
                 |_ RokhyGiggle
                 |_ RokhyHiccup
