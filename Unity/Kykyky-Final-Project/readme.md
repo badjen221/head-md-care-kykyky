@@ -38,12 +38,14 @@
         |_ Sounds
             |_ Narrations
             |_ SFX
-                |_ Miaow
+                |_ CheekyMiaow
                 |_ RokhyCrying
-                |_ Woof
-                |_ ClawClicking
-                |_ Giggle
+                |_ RokhyGiggle
+                |_ RokhyHiccup
+                |_ RokhyDadada
+                |_ LuckyWoof
+                |_ LuckyClawClicking
                 |_ LuckyWhimper
                 |_ LuckyBreathing
-                |_ HeartSound
+                |_ LuckyHeartSound
         |_ Scripts
