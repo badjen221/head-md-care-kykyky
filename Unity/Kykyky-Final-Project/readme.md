@@ -17,10 +17,11 @@
                 |_ Window
             |_ Materials (To check if in Unity)
         |– Scenes
-            |- Level1
+            |_ Level1-PartA
+            |_ Level1-PartB
         |– Prefabs
         |_ Yarn
-            |_ .YarnProject
+            |_ KyKyKy.YarnProject
             |_ Chapter1.yarn
         |_ Animation / Mocap
             |_ LuckyAnimation
@@ -37,11 +38,15 @@
         |_ Sounds
             |_ Narrations
             |_ SFX
+                |_ CheekyMiaow
+                |_ CheekyHissing
                 |_ RokhyCrying
-                |_ Woof
-                |_ ClawClicking
-                |_ Giggle
+                |_ RokhyGiggle
+                |_ RokhyHiccup
+                |_ RokhyDadada
+                |_ LuckyWoof
+                |_ LuckyClawClicking
                 |_ LuckyWhimper
                 |_ LuckyBreathing
-                |_ HeartSound
+                |_ LuckyHeartSound
         |_ Scripts
