@@ -97,3 +97,19 @@ All dimensions are expressed in meters.
 | Side table | 0.50 | 0.50 | 0.50 |
 | Floor lamp | 0.40 | 0.40 | 1.70 |
 
+
+## Level 1 — Rokhy & Lucky
+
+### Part A — Lucky comforts the baby
+
+daytime, baby cries in rocking chair → tap (steady/repeated) → Lucky advances: woof + claw-clicks, cry softens → stop 2s → gentle panic, louder cry → resume tap → Lucky reaches her → rocks her → giggle → rest & watch
+
+### Transition
+
+day → evening → night (color shift) → Lucky pads to bed, claw-clicks fade → quiet → morning rises → baby a few months older, now able to crawl
+
+### Part B — the baby comforts Lucky
+
+Lucky asleep, nightmare, whimpering → tap → baby crawls toward him, whimpering softens → stop 2s → nightmare worsens gently → resume tap → baby reaches him → settles against his side → quiet breathing → rest & watch
+
+---
