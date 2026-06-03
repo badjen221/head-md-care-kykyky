@@ -5,6 +5,25 @@
 **Core principle:** one gesture (tap = care) · sound + movement · no words · aimed at children 4–8
 
 ---
+# Splash Screen
+ 
+The title of the game **KYKYKY!** appears big in the middle of the screen.
+ 
+You can hear the sounds of the characters in the game:
+- **Cat (Cheeky)**
+- **Rokhy (Baby)**
+- **Lucky (Dog)**
+The user must **tap the screen** to move forward to the Intro page.
+ 
+---
+ 
+# Intro Screen
+ 
+The intro is talking about **Rokhy and Lucky**, born on the same day.
+ 
+We see them both on screen at the same time. The screen is split with a **separation in the middle** between the two of them — one side for Rokhy and one side for Lucky — to show that they were born on the same day.
+ 
+At the **top of the screen** there is a **calendar** showing the same date for both of them, making it clear that Rokhy and Lucky share the same birthday.
 
 ## Level 1 — Rokhy & Lucky
 

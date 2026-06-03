@@ -112,4 +112,25 @@ day → evening → night (color shift) → Lucky pads to bed, claw-clicks fade 
 
 Lucky asleep, nightmare, whimpering → tap → baby crawls toward him, whimpering softens → stop 2s → nightmare worsens gently → resume tap → baby reaches him → settles against his side → quiet breathing → rest & watch
 
+#### Part B — details for implementation
+Lucky Sound
+Lucky asleep; for 5sec hearing its breathing continuous background sound
+After 5sec we hear also whimpering; it loops for 10sec and stops for 10sec and it loops like that continuously until Rokhy arrives.
+
+User Interaction Part 1
+If the user taps the iPad, on MousePointerDown we will activate that Rokhy starts to move towards Lucky.
+If there is a MousePointerUp event then the motion stops. 
+If the user keeps the MousePointerDown then Rokhy continues moving.
+? Does the MousePointerDown covers also if the user drags?
+
+In V0 we don't check if the user taps Rokhy (the caretaker of the screen), just anywhere on the screen.
+
+Lucky Sound during Interaction
+
+User Interaction Part 2 (when Rokhy reaches Lucky)
+
+
+TO BE CONTINUED
+
+
 ---
