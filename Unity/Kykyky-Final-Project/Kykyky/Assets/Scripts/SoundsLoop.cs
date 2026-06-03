@@ -17,32 +17,63 @@ public class SoundsLoop : MonoBehaviour
     [SerializeField] private float maxNextPause = 30f; // Maximum random pause before playing the next sound
 
     private AudioSource audioSource; // Reference to the AudioSource component
+    private int lastSoundIndex = -1;
+    private Coroutine playSoundsRoutine;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    void OnEnable()
     {
-        audioSource = GetComponent<AudioSource>();
-        StartCoroutine(PlaySoundsLoop());
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+
+        if (playSoundsRoutine == null)
+        {
+            playSoundsRoutine = StartCoroutine(PlaySoundsLoop());
+        }
     }
 
-
-
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-
+        if (playSoundsRoutine != null)
+        {
+            StopCoroutine(playSoundsRoutine);
+            playSoundsRoutine = null;
+        }
     }
+
 
     // Coroutine to play sounds in a loop with random pauses
     private System.Collections.IEnumerator PlaySoundsLoop()
     {
+        if (audioSource == null || sounds == null || sounds.Length == 0)
+        {
+            yield break;
+        }
+
         // Wait for a random pause before playing the first sound
         yield return new WaitForSeconds(Random.Range(minFirstPause, maxFirstPause));
         while (true)
         {
+            if (this == null || audioSource == null || sounds == null || sounds.Length == 0)
+            {
+                yield break;
+            }
+
             // Play a random sound from the list
-            audioSource.clip = sounds[Random.Range(0, sounds.Length)];
-            Debug.Log("Playing sound: " + audioSource.clip.name);
+            int soundIndex = Random.Range(0, sounds.Length);
+            if (sounds.Length > 1)
+            {
+                while (soundIndex == lastSoundIndex)
+                {
+                    soundIndex = Random.Range(0, sounds.Length);
+                }
+            }
+
+            lastSoundIndex = soundIndex;
+            audioSource.clip = sounds[soundIndex];
+            // Debug.Log("Playing sound: " + audioSource.clip.name);
             audioSource.Play();
 
             // Wait for the sound to finish playing
