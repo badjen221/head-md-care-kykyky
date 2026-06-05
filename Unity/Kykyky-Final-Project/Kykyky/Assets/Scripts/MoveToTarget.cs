@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 // This script allows a GameObject to move towards a specified target when the user clicks on it.
 public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -17,6 +18,7 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public bool movementActivated = false;
 
     private bool isMoving = false;
+    private readonly List<AudioSource> pausedAudioSources = new List<AudioSource>();
 
     void Update()
     {
@@ -36,13 +38,7 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             }
             else if (!inputHeld && isMoving)
             {
-                isMoving = false;
-
-                FlashEffect flashEffect = GetComponent<FlashEffect>();
-                if (flashEffect != null && !arrivedOnTarget)
-                {
-                    flashEffect.StartFlashing();
-                }
+                StopMoving();
             }
         }
 
@@ -56,8 +52,8 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
         if (distance <= stoppingDistance)
         {
-            isMoving = false;
             arrivedOnTarget = true;
+            StopMoving(true);
             return;
         }
 
@@ -71,28 +67,106 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        isMoving = true;
-
         if (!movementActivated)
         {
             movementActivated = true;
         }
 
-        FlashEffect flashEffect = GetComponent<FlashEffect>();
-        if (flashEffect != null)        {
-            flashEffect.StopFlashing();
-        }
+        StartMoving();
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        isMoving = false;
-        FlashEffect flashEffect = GetComponent<FlashEffect>();
+        StopMoving();
+    }
 
-        if (flashEffect != null && !arrivedOnTarget)
+    private void StartMoving()
+    {
+        if (isMoving)
         {
-            flashEffect.StartFlashing();
+            return;
         }
+
+        isMoving = true;
+        arrivedOnTarget = false;
+
+        PauseActiveAudioSources();
+
+        FlashEffect flashEffect = GetComponent<FlashEffect>();
+        if (flashEffect != null)
+        {
+            flashEffect.StopFlashing();
+        }
+    }
+
+    private void StopMoving(bool arrived = false)
+    {
+        if (!isMoving && pausedAudioSources.Count == 0)
+        {
+            arrivedOnTarget = arrivedOnTarget || arrived;
+            return;
+        }
+
+        isMoving = false;
+        arrivedOnTarget = arrived;
+
+        ResumePausedAudioSources();
+
+        if (!arrivedOnTarget)
+        {
+            FlashEffect flashEffect = GetComponent<FlashEffect>();
+            if (flashEffect != null)
+            {
+                flashEffect.StartFlashing();
+            }
+        }
+    }
+
+    private void PauseActiveAudioSources()
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        pausedAudioSources.Clear();
+
+        AudioSource[] actorSources = GetComponentsInChildren<AudioSource>(true);
+        AudioSource[] targetSources = target.GetComponentsInChildren<AudioSource>(true);
+
+        HashSet<AudioSource> uniqueSources = new HashSet<AudioSource>();
+
+        foreach (AudioSource audioSource in actorSources)
+        {
+            if (audioSource != null && audioSource.isPlaying && uniqueSources.Add(audioSource))
+            {
+                audioSource.Pause();
+                pausedAudioSources.Add(audioSource);
+            }
+        }
+
+        foreach (AudioSource audioSource in targetSources)
+        {
+            if (audioSource != null && audioSource.isPlaying && uniqueSources.Add(audioSource))
+            {
+                audioSource.Pause();
+                pausedAudioSources.Add(audioSource);
+            }
+        }
+    }
+
+    private void ResumePausedAudioSources()
+    {
+        for (int i = pausedAudioSources.Count - 1; i >= 0; i--)
+        {
+            AudioSource audioSource = pausedAudioSources[i];
+            if (audioSource != null)
+            {
+                audioSource.UnPause();
+            }
+        }
+
+        pausedAudioSources.Clear();
     }
 
     private bool IsGlobalInputHeld()
