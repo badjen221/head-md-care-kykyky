@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 // This script allows a GameObject to move towards a specified target when the user clicks on it.
 public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [Header("Target")]
     [SerializeField] private Transform target;
+
+    public Transform Target => target;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
@@ -17,6 +20,32 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     void Update()
     {
+        if (movementActivated)
+        {
+            bool inputHeld = IsGlobalInputHeld();
+
+            if (inputHeld && !isMoving)
+            {
+                isMoving = true;
+
+                FlashEffect flashEffect = GetComponent<FlashEffect>();
+                if (flashEffect != null)
+                {
+                    flashEffect.StopFlashing();
+                }
+            }
+            else if (!inputHeld && isMoving)
+            {
+                isMoving = false;
+
+                FlashEffect flashEffect = GetComponent<FlashEffect>();
+                if (flashEffect != null && !arrivedOnTarget)
+                {
+                    flashEffect.StartFlashing();
+                }
+            }
+        }
+
         if (!isMoving || target == null) return;
 
         Vector3 currentPosition = transform.position;
@@ -64,5 +93,20 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         {
             flashEffect.StartFlashing();
         }
+    }
+
+    private bool IsGlobalInputHeld()
+    {
+        if (Touchscreen.current != null)
+        {
+            return Touchscreen.current.primaryTouch.press.isPressed;
+        }
+
+        if (Mouse.current != null)
+        {
+            return Mouse.current.leftButton.isPressed;
+        }
+
+        return false;
     }
 }
