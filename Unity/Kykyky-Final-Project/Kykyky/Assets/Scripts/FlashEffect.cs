@@ -1,6 +1,7 @@
 using UnityEngine;
 
-// This script creates a flashing effect on a GameObject's material emission color, which can be used to draw attention to it. The flashing starts after a specified delay and can be stopped when the object is clicked.
+// This script creates a flashing effect on a GameObject's material emission color, which can be used to draw attention to it. 
+//The flashing starts after a specified delay and can be stopped when the object is clicked.
 public class FlashEffect : MonoBehaviour
 {
     [Header("Timing")]

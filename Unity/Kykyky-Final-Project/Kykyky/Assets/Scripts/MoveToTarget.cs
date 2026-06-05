@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 // This script allows a GameObject to move towards a specified target when the user clicks on it.
 public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [Header("Target")]
     [SerializeField] private Transform target;
+
+    public Transform Target => target;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
@@ -14,9 +17,26 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public bool movementActivated = false;
 
     private bool isMoving = false;
+    private bool wasInputHeld = false;
 
     void Update()
     {
+        if (movementActivated)
+        {
+            bool inputHeld = IsGlobalInputHeld();
+
+            if (inputHeld && !wasInputHeld)
+            {
+                StartMoving();
+            }
+            else if (!inputHeld && wasInputHeld)
+            {
+                StopMoving();
+            }
+
+            wasInputHeld = inputHeld;
+        }
+
         if (!isMoving || target == null) return;
 
         Vector3 currentPosition = transform.position;
@@ -27,8 +47,7 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
         if (distance <= stoppingDistance)
         {
-            isMoving = false;
-            arrivedOnTarget = true;
+            StopMoving(true);
             return;
         }
 
@@ -42,27 +61,70 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        isMoving = true;
-
         if (!movementActivated)
         {
             movementActivated = true;
         }
 
-        FlashEffect flashEffect = GetComponent<FlashEffect>();
-        if (flashEffect != null)        {
-            flashEffect.StopFlashing();
-        }
+        wasInputHeld = true;
+        StartMoving();
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        isMoving = false;
-        FlashEffect flashEffect = GetComponent<FlashEffect>();
+        wasInputHeld = false;
+        StopMoving();
+    }
 
-        if (flashEffect != null && !arrivedOnTarget)
+    private void StartMoving()
+    {
+        if (isMoving)
         {
-            flashEffect.StartFlashing();
+            return;
         }
+
+        isMoving = true;
+        arrivedOnTarget = false;
+
+        FlashEffect flashEffect = GetComponent<FlashEffect>();
+        if (flashEffect != null)
+        {
+            flashEffect.StopFlashing();
+        }
+    }
+
+    private void StopMoving(bool arrived = false)
+    {
+        if (!isMoving && !arrived)
+        {
+            return;
+        }
+
+        isMoving = false;
+        arrivedOnTarget = arrived;
+
+        if (!arrivedOnTarget)
+        {
+            FlashEffect flashEffect = GetComponent<FlashEffect>();
+            if (flashEffect != null)
+            {
+                flashEffect.StartFlashing();
+            }
+        }
+    }
+
+    private bool IsGlobalInputHeld()
+    {
+        if (Touchscreen.current != null)
+        {
+            return Touchscreen.current.primaryTouch.press.isPressed;
+        }
+
+        if (Mouse.current != null)
+        {
+            return Mouse.current.leftButton.isPressed;
+        }
+
+        return false;
     }
 }
