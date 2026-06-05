@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+// This script allows a GameObject to move towards a specified target when the user clicks on it.
 public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [Header("Target")]
