@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
@@ -40,7 +41,7 @@ public class QuickAnimSetting : EditorWindow
         {
             return;
         }
-        ModelImporter model = AssetImporter.GetAtPath((AssetDatabase.GetAssetPath(obj.GetInstanceID()))) as ModelImporter;
+        ModelImporter model = AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(obj)) as ModelImporter;
 
         if (model == null)
         {
@@ -185,3 +186,4 @@ public class QuickAnimSetting : EditorWindow
         EditorGUILayout.EndHorizontal();
     }
 }
+#endif

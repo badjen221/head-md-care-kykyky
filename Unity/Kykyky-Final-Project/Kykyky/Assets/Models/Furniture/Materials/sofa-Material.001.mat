@@ -1,6 +1,12 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+<<<<<<< HEAD
 --- !u!114 &-1273763398029433910
+=======
+<<<<<<< HEAD
+=======
+--- !u!114 &-4002091511374777775
+>>>>>>> 7deb6958049a79c0d2e17c60e06228795b32b3a6
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13,6 +19,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
   version: 10
+<<<<<<< HEAD
+=======
+>>>>>>> cab8892b39dcc03790e52420a89e1c9f8f1ffe97
+>>>>>>> 7deb6958049a79c0d2e17c60e06228795b32b3a6
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -135,3 +145,22 @@ Material:
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+--- !u!114 &91356451856438425
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
+  version: 10
+=======
+>>>>>>> cab8892b39dcc03790e52420a89e1c9f8f1ffe97
+>>>>>>> 7deb6958049a79c0d2e17c60e06228795b32b3a6
