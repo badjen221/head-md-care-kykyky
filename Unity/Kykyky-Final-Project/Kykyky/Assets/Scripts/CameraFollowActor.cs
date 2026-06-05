@@ -32,7 +32,6 @@ public class CameraFollowActor : MonoBehaviour
         {
             isFollowing = true;
         }
-        //test push 
         if (!isFollowing || actorMovement.Target == null) return;
 
         Vector3 actorPosition = actor.position;
