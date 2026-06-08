@@ -5,10 +5,10 @@ using UnityEngine;
 public class FlashEffect : MonoBehaviour
 {
     [Header("Timing")]
-    [SerializeField] private float delayBeforeStart = 5f;
+    [SerializeField] private float delayBeforeStart = 1f;
 
     [Header("Flash Settings")]
-    [SerializeField] private float flashSpeed = 2f;
+    [SerializeField] private float flashSpeed = 5f;
     [SerializeField] private float minBrightness = 0.3f;
     [SerializeField] private float maxBrightness = 1.8f;
 

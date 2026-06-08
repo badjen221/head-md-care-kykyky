@@ -1,30 +1,45 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-// This script allows a GameObject to move towards a specified target when the user clicks on it.
+
 public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [Header("Target")]
     [SerializeField] private Transform target;
-
     public Transform Target => target;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private float stoppingDistance = 0.5f;
+    [SerializeField] private float stoppingDistance = 0.8f;
+
+    [Header("Audio - Stop when movement starts")]
+    [Tooltip("SoundsLoop components that will be stopped when movement begins (e.g. SoundCrying)")]
+    [SerializeField] private SoundsLoop[] stopOnMoveStart;
+
+    [Header("Audio - Play when movement starts")]
+    [Tooltip("SoundsLoop components that will be played when movement begins (e.g. footsteps)")]
+    [SerializeField] private SoundsLoop[] playOnMoveStart;
+
+    [Header("Audio - Play on arrival")]
+    [Tooltip("SoundsLoop components that will be started when the GameObject reaches the target (e.g. celebration)")]
+    [SerializeField] private SoundsLoop[] playOnArrival;
 
     public bool arrivedOnTarget = false;
     public bool movementActivated = false;
-
     private bool isMoving = false;
     private bool wasInputHeld = false;
+
+    void Start()
+    {
+        SetSoundsLoopActive(playOnMoveStart, false);
+        SetSoundsLoopActive(playOnArrival, false);
+    }
 
     void Update()
     {
         if (movementActivated)
         {
             bool inputHeld = IsGlobalInputHeld();
-
             if (inputHeld && !wasInputHeld)
             {
                 StartMoving();
@@ -33,7 +48,6 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             {
                 StopMoving();
             }
-
             wasInputHeld = inputHeld;
         }
 
@@ -53,7 +67,6 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
         arrivedOnTarget = false;
 
-        // Move toward the target on the XZ plane while keeping Y frozen.
         Vector3 direction = (flatTarget - flatCurrent).normalized;
         Vector3 nextPosition = currentPosition + new Vector3(direction.x, 0f, direction.z) * moveSpeed * Time.deltaTime;
         transform.position = new Vector3(nextPosition.x, currentPosition.y, nextPosition.z);
@@ -65,7 +78,6 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         {
             movementActivated = true;
         }
-
         wasInputHeld = true;
         StartMoving();
     }
@@ -78,37 +90,52 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     private void StartMoving()
     {
-        if (isMoving)
-        {
-            return;
-        }
+        if (isMoving) return;
 
         isMoving = true;
         arrivedOnTarget = false;
 
+        SetSoundsLoopActive(stopOnMoveStart, false);
+        SetSoundsLoopActive(playOnMoveStart, true);
+
         FlashEffect flashEffect = GetComponent<FlashEffect>();
         if (flashEffect != null)
-        {
             flashEffect.StopFlashing();
-        }
     }
 
     private void StopMoving(bool arrived = false)
     {
-        if (!isMoving && !arrived)
-        {
-            return;
-        }
+        if (!isMoving && !arrived) return;
 
         isMoving = false;
         arrivedOnTarget = arrived;
 
-        if (!arrivedOnTarget)
+        SetSoundsLoopActive(playOnMoveStart, false);
+
+        if (arrivedOnTarget)
         {
+            SetSoundsLoopActive(stopOnMoveStart, false);
+            SetSoundsLoopActive(playOnArrival, true);
+        }
+        else
+        {
+            SetSoundsLoopActive(stopOnMoveStart, true);
+
             FlashEffect flashEffect = GetComponent<FlashEffect>();
             if (flashEffect != null)
-            {
                 flashEffect.StartFlashing();
+        }
+    }
+
+    private void SetSoundsLoopActive(SoundsLoop[] loops, bool active)
+    {
+        if (loops == null) return;
+        foreach (SoundsLoop loop in loops)
+        {
+            if (loop != null)
+            {
+                if (active) loop.StartLoop();
+                else loop.StopLoop();
             }
         }
     }
@@ -116,15 +143,9 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     private bool IsGlobalInputHeld()
     {
         if (Touchscreen.current != null)
-        {
             return Touchscreen.current.primaryTouch.press.isPressed;
-        }
-
         if (Mouse.current != null)
-        {
             return Mouse.current.leftButton.isPressed;
-        }
-
         return false;
     }
 }
