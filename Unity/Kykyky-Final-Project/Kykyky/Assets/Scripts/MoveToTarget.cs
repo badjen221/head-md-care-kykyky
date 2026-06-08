@@ -11,7 +11,7 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private float stoppingDistance = 0.5f;
+    [SerializeField] private float stoppingDistance = 0.8f;
 
     public bool arrivedOnTarget = false;
     public bool movementActivated = false;
