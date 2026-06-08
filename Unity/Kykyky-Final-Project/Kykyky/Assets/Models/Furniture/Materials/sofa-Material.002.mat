@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 <<<<<<< HEAD
 =======
---- !u!114 &-8148516185396745993
+--- !u!114 &-6038699051636446457
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15,7 +15,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
   version: 10
->>>>>>> 7deb6958049a79c0d2e17c60e06228795b32b3a6
+>>>>>>> 5b7c224ec89802a98df47fec638f05e58c814d58
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -139,7 +139,7 @@ Material:
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 <<<<<<< HEAD
---- !u!114 &4054728269369749546
+--- !u!114 &1915868703662402792
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,4 +153,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
   version: 10
 =======
->>>>>>> 7deb6958049a79c0d2e17c60e06228795b32b3a6
+>>>>>>> 5b7c224ec89802a98df47fec638f05e58c814d58

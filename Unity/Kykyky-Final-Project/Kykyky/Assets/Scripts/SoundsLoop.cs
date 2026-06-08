@@ -43,6 +43,25 @@ public class SoundsLoop : MonoBehaviour
         }
     }
 
+    public void StartLoop()
+    {
+        if (!gameObject.activeInHierarchy) return;
+        if (playSoundsRoutine == null)
+        {
+            playSoundsRoutine = StartCoroutine(PlaySoundsLoop());
+        }
+    }
+
+    public void StopLoop()
+    {
+        if (playSoundsRoutine != null)
+        {
+            StopCoroutine(playSoundsRoutine);
+            playSoundsRoutine = null;
+        }
+        if (audioSource != null)
+            audioSource.Stop();
+    }
 
     // Coroutine to play sounds in a loop with random pauses
     private System.Collections.IEnumerator PlaySoundsLoop()
