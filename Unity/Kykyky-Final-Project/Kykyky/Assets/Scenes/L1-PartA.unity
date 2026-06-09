@@ -301,7 +301,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: faa8547ce104a459ab47ef62e0dae644, type: 3}
+  m_Resource: {fileID: 8300000, guid: 2e5bd871a9557408fb034df4dd40688b, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.025
   m_Pitch: 1
@@ -347,7 +347,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -604,23 +604,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7479253993931613225, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
   m_PrefabInstance: {fileID: 1231167115}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &743666287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 743666282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dc5030120aa94701a2727ccc6349416, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FlashEffect
-  delayBeforeStart: 1
-  flashSpeed: 5
-  minBrightness: 0.3
-  maxBrightness: 1.8
-  glowColor: {r: 1, g: 0.8, b: 0, a: 1}
 --- !u!64 &743666288
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -665,6 +648,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &743666294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743666282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dc5030120aa94701a2727ccc6349416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlashEffect
+  delayBeforeStart: 1
+  flashSpeed: 5
+  minBrightness: 0.3
+  maxBrightness: 1.8
+  glowColor: {r: 1, g: 0.8, b: 0, a: 1}
 --- !u!1 &980386921
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,10 +1122,10 @@ PrefabInstance:
       addedObject: {fileID: 743666288}
     - targetCorrespondingSourceObject: {fileID: 7479253993931613225, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 743666287}
+      addedObject: {fileID: 743666291}
     - targetCorrespondingSourceObject: {fileID: 7479253993931613225, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 743666291}
+      addedObject: {fileID: 743666294}
   m_SourcePrefab: {fileID: 100100000, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
 --- !u!1001 &1232776543
 PrefabInstance:
