@@ -16,12 +16,15 @@ public class RockingCradle : MonoBehaviour
     private bool     isRocking   = false;
     private Coroutine rockRoutine = null;
 
+    private Quaternion initialRotation;  // add this field
+
     // ── Public trigger ────────────────────────────────────────────
     // Call this from anywhere: other scripts, UI buttons, triggers
     public void StartRocking()
     {
         if (isRocking) return;          // already rocking, ignore
         rockRoutine = StartCoroutine(RockCoroutine());
+      
     }
 
     public void StopRocking()
@@ -35,6 +38,12 @@ public class RockingCradle : MonoBehaviour
 
         // Snap back to rest position smoothly
         StartCoroutine(ReturnToRest());
+    }
+
+    void Start()
+    {
+        initialRotation = transform.localRotation;  // cache whatever rotation it has in the scene
+        StartRocking();
     }
 
     // ── Core rocking coroutine ────────────────────────────────────
@@ -62,7 +71,7 @@ public class RockingCradle : MonoBehaviour
                           * rockAngle
                           * envelope;
 
-            transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+            transform.localRotation = initialRotation * Quaternion.Euler(0f, 0f, angle);
 
             yield return null;
         }
@@ -78,7 +87,7 @@ public class RockingCradle : MonoBehaviour
     IEnumerator ReturnToRest()
     {
         Quaternion startRot = transform.localRotation;
-        Quaternion restRot  = Quaternion.identity;
+        Quaternion restRot  = initialRotation;
         float      duration = 0.5f;
         float      elapsed  = 0f;
 
