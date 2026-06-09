@@ -146,23 +146,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
---- !u!114 &89731435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 89731431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dc5030120aa94701a2727ccc6349416, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FlashEffect
-  delayBeforeStart: 1
-  flashSpeed: 5
-  minBrightness: 0.3
-  maxBrightness: 1.8
-  glowColor: {r: 0, g: 0.7597966, b: 1, a: 1}
 --- !u!1 &197948710
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,12 +373,6 @@ PrefabInstance:
       addedObject: {fileID: 643692062}
     - targetCorrespondingSourceObject: {fileID: 7479253993931613225, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 643692061}
-    - targetCorrespondingSourceObject: {fileID: 7479253993931613225, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 643692060}
-    - targetCorrespondingSourceObject: {fileID: 7479253993931613225, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 643692059}
   m_SourcePrefab: {fileID: 100100000, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
 --- !u!4 &643692057 stripped
@@ -416,7 +393,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 643692058}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 2fff3417616cf45828268fc6f45e1569, type: 2}
   m_CullingMode: 0
@@ -430,46 +407,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &643692060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 643692058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 582c0d46d124d4204806235366c71562, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MoveToTarget
-  target: {fileID: 0}
-  moveSpeed: 0.2
-  stoppingDistance: 0.8
-  stopOnMoveStart:
-  - {fileID: 0}
-  playOnMoveStart:
-  - {fileID: 2126958480}
-  playOnArrival:
-  - {fileID: 0}
-  arrivedOnTarget: 0
-  movementActivated: 0
---- !u!114 &643692061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 643692058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dc5030120aa94701a2727ccc6349416, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FlashEffect
-  delayBeforeStart: 1
-  flashSpeed: 5
-  minBrightness: 0.3
-  maxBrightness: 1.8
-  glowColor: {r: 1, g: 0.8, b: 0, a: 1}
 --- !u!64 &643692062
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -606,6 +543,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 88.402, y: 0, z: -21.528}
+--- !u!4 &951338796 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
+  m_PrefabInstance: {fileID: 643692056}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1128165742
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,6 +801,7 @@ GameObject:
   - component: {fileID: 1644242490}
   - component: {fileID: 1644242493}
   - component: {fileID: 1644242494}
+  - component: {fileID: 1644242495}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1081,6 +1024,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1644242495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644242489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6e56ce6302ea4525b2deb6a1763cfa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraFollowActor
+  actor: {fileID: 2075448397}
+  offset: {x: 1, y: 1, z: 0}
+  transitionSpeed: 2
 --- !u!1 &1650755301
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,6 +1199,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 875518695310010918, guid: 7c5463b8b2ae24f61ad193a2b85e5ded, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5876506905591360230, guid: 7c5463b8b2ae24f61ad193a2b85e5ded, type: 3}
       propertyPath: m_Name
       value: BigRokhy
@@ -1294,8 +1256,83 @@ PrefabInstance:
       addedObject: {fileID: 89731434}
     - targetCorrespondingSourceObject: {fileID: 5876506905591360230, guid: 7c5463b8b2ae24f61ad193a2b85e5ded, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 89731435}
+      addedObject: {fileID: 2075448400}
+    - targetCorrespondingSourceObject: {fileID: 2919250444502519071, guid: 7c5463b8b2ae24f61ad193a2b85e5ded, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2075448399}
+    - targetCorrespondingSourceObject: {fileID: 2919250444502519071, guid: 7c5463b8b2ae24f61ad193a2b85e5ded, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2075448404}
   m_SourcePrefab: {fileID: 100100000, guid: 7c5463b8b2ae24f61ad193a2b85e5ded, type: 3}
+--- !u!4 &2075448397 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6541015881539350620, guid: 7c5463b8b2ae24f61ad193a2b85e5ded, type: 3}
+  m_PrefabInstance: {fileID: 2075448396}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2075448398 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2919250444502519071, guid: 7c5463b8b2ae24f61ad193a2b85e5ded, type: 3}
+  m_PrefabInstance: {fileID: 2075448396}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2075448399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075448398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dc5030120aa94701a2727ccc6349416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlashEffect
+  delayBeforeStart: 1
+  flashSpeed: 5
+  minBrightness: 0.3
+  maxBrightness: 1.8
+  glowColor: {r: 0, g: 0.7597966, b: 1, a: 1}
+--- !u!114 &2075448400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89731431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582c0d46d124d4204806235366c71562, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoveToTarget
+  target: {fileID: 951338796}
+  moveSpeed: 2
+  stoppingDistance: 0.8
+  stopOnMoveStart: []
+  playOnMoveStart: []
+  playOnArrival: []
+  arrivedOnTarget: 0
+  movementActivated: 0
+--- !u!64 &2075448404
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075448398}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &2126958478
 GameObject:
   m_ObjectHideFlags: 0
