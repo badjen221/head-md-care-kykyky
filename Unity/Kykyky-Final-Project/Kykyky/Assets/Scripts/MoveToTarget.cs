@@ -116,6 +116,13 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         {
             SetSoundsLoopActive(stopOnMoveStart, false);
             SetSoundsLoopActive(playOnArrival, true);
+            if(DayNightCycle.Instance != null) {
+                DayNightCycle.Instance.PlayDayNightEffect();
+            }
+            else
+            {
+                Debug.LogWarning("DayNightCycle instance not found. Make sure there is a DayNightCycle script in the scene.");
+            }
         }
         else
         {
