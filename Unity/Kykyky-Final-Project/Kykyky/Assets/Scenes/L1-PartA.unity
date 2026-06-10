@@ -1618,8 +1618,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1763778611}
   - component: {fileID: 1763778610}
+  - component: {fileID: 1763778612}
   m_Layer: 0
-  m_Name: DayNightController
+  m_Name: SceneController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1638,8 +1639,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   directionalLight: {fileID: 385600438}
-  fadeToDarkDuration: 5
-  nightHoldDuration: 3
+  fadeToDarkDuration: 10
+  nightHoldDuration: 5
   fadeToLightDuration: 10
   dayAngle: 50
   nightAngle: -30
@@ -1664,6 +1665,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1763778612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763778609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c0e066b6f5f47749d41bd3d34a265e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  rockingCradle: {fileID: 2087304628}
+  targetCamera: {fileID: 785359}
+  zoomOutPercent: 50
+  zoomDuration: 5
+  returnDuration: 10
 --- !u!1 &1764242128 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
@@ -1719,6 +1737,7 @@ MonoBehaviour:
   - {fileID: 1200632834}
   arrivedOnTarget: 0
   movementActivated: 0
+  sceneSequence: {fileID: 1763778612}
 --- !u!1001 &1997417621
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1827,6 +1846,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2087304627}
+  - component: {fileID: 2087304629}
+  - component: {fileID: 2087304628}
   m_Layer: 0
   m_Name: CradleRokhy
   m_TagString: Untagged
@@ -1851,6 +1872,44 @@ Transform:
   - {fileID: 398441710}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2087304628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087304626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4d1749e9cb5041449c74aefbbc8f7f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  rockAngle: 15
+  rockSpeed: 1.5
+  rockCycles: 20
+  useSmoothStop: 1
+--- !u!64 &2087304629
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087304626}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
