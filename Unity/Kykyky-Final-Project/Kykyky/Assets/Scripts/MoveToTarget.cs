@@ -120,7 +120,7 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     private void StopMoving(bool arrived = false)
     {
-        Debug.Log("StopMoving called with arrived = " + arrived);
+        //Debug.Log("StopMoving called with arrived = " + arrived);
 
         if (!isMoving && !arrived) return;
 
