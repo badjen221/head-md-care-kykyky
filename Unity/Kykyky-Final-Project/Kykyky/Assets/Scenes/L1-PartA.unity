@@ -1677,7 +1677,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c0e066b6f5f47749d41bd3d34a265e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  rockingCradle: {fileID: 2087304628}
+  rockingObject: {fileID: 2087304628}
   targetCamera: {fileID: 785359}
   zoomOutPercent: 50
   zoomDuration: 5
