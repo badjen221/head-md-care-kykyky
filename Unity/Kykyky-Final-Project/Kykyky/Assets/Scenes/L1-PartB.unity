@@ -247,19 +247,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 12466b6e13e4945c3a8fd8981a7bf470, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.5131589
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 12466b6e13e4945c3a8fd8981a7bf470, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 12466b6e13e4945c3a8fd8981a7bf470, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.85829365
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 12466b6e13e4945c3a8fd8981a7bf470, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 12466b6e13e4945c3a8fd8981a7bf470, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -267,7 +267,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 12466b6e13e4945c3a8fd8981a7bf470, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -118.251
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 12466b6e13e4945c3a8fd8981a7bf470, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -514,6 +514,7 @@ MonoBehaviour:
   playOnArrival: []
   arrivedOnTarget: 0
   movementActivated: 0
+  sceneSequence: {fileID: 0}
 --- !u!1 &822522282
 GameObject:
   m_ObjectHideFlags: 0
@@ -662,20 +663,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0375b18d0b12748eda16a49c2c481989, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  lights: []
+  directionalLight: {fileID: 0}
   fadeToDarkDuration: 5
   nightHoldDuration: 3
   fadeToLightDuration: 5
+  dayAngle: 50
+  nightAngle: -30
   dayIntensity: 1
   nightIntensity: 0
-  dayAmbientColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  nightAmbientColor: {r: 0.02, g: 0.02, b: 0.08, a: 1}
-  dayFogColor: {r: 0.7, g: 0.8, b: 0.9, a: 1}
-  nightFogColor: {r: 0.01, g: 0.01, b: 0.05, a: 1}
-  fadeFog: 1
   dayLightColor: {r: 1, g: 0.95, b: 0.8, a: 1}
   nightLightColor: {r: 0.1, g: 0.1, b: 0.2, a: 1}
-  directionalLight: {fileID: 0}
+  dayAmbientColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  nightAmbientColor: {r: 0.02, g: 0.02, b: 0.08, a: 1}
 --- !u!4 &1032615686
 Transform:
   m_ObjectHideFlags: 0
@@ -1475,6 +1474,7 @@ MonoBehaviour:
   playOnArrival: []
   arrivedOnTarget: 0
   movementActivated: 0
+  sceneSequence: {fileID: 0}
 --- !u!64 &2075448404
 MeshCollider:
   m_ObjectHideFlags: 0
