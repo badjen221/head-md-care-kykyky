@@ -897,7 +897,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveToTarget
   target: {fileID: 951338796}
-  moveSpeed: 0.5
+  moveSpeed: 0.2
   stoppingDistance: 0.2
   stopOnMoveStart:
   - {fileID: 1927321262}
