@@ -29,15 +29,13 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     private bool isMoving = false;
     private bool wasInputHeld = false;
     public SceneSequence sceneSequence;
-
-    public string crawlClipName = "crawl";  // must match the clip name exactly
-    private Animation crawlAnimation;
+    private Animator animator;
 
     void Start()
     {
-        crawlAnimation = GetComponent<Animation>();
-        if (crawlAnimation == null)
-            Debug.LogWarning("No Animation component found on " + gameObject.name);
+        animator = GetComponent<Animator>();  // ← this line is missing
+        if (animator == null)
+            Debug.LogWarning("No Animator found on " + gameObject.name);
 
         SetSoundsLoopActive(playOnMoveStart, false);
         SetSoundsLoopActive(playOnArrival, false);
@@ -110,10 +108,8 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         if (flashEffect != null)
             flashEffect.StopFlashing();
 
-        if (crawlAnimation != null)
-        {
-            crawlAnimation.Play(crawlClipName);
-        }
+        if (animator != null)
+            animator.SetBool("isMoving", true);
     }
 
     private void StopMoving(bool arrived = false)
@@ -125,23 +121,14 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
         SetSoundsLoopActive(playOnMoveStart, false);
 
-        if (crawlAnimation != null)
-        {
-            crawlAnimation.Stop();
-        }   
+        if (animator != null)
+            animator.SetBool("isMoving", false);
 
         if (arrivedOnTarget)
         {
             SetSoundsLoopActive(stopOnMoveStart, false);
             SetSoundsLoopActive(playOnArrival, true);
             sceneSequence.OnArrivedAtTarget();
-            /*if(DayNightCycle.Instance != null) {
-                DayNightCycle.Instance.PlayDayNightEffect();
-            }
-            else
-            {
-                Debug.LogWarning("DayNightCycle instance not found. Make sure there is a DayNightCycle script in the scene.");
-            }*/
         }
         else
         {
