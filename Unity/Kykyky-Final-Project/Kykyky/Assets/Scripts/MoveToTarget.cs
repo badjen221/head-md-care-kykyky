@@ -100,6 +100,8 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     private void StartMoving()
     {
+        //Debug.Log("StartMoving called");
+
         if (isMoving) return;
 
         isMoving = true;
@@ -118,6 +120,8 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     private void StopMoving(bool arrived = false)
     {
+        //Debug.Log("StopMoving called with arrived = " + arrived);
+
         if (!isMoving && !arrived) return;
 
         isMoving = false;
