@@ -66,8 +66,8 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         float distance = Vector3.Distance(flatCurrent, flatTarget);
 
         // ← add these two lines
-        Debug.Log("Distance to target: " + distance);
-        Debug.Log("Stopping distance: " + stoppingDistance);
+        //Debug.Log("Distance to target: " + distance);
+        //Debug.Log("Stopping distance: " + stoppingDistance);
 
         if (distance <= stoppingDistance)
         {
