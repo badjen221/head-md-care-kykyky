@@ -7,8 +7,14 @@ public class SceneSequence : MonoBehaviour
 
     [Header("Camera Zoom Out")]
     public Camera targetCamera;
-    public float zoomOutPercent = 30f;    // 30 = zoom out by 30%, 50 = zoom out by 50%
+    public float zoomOutPercent = 30f;
     public float zoomDuration   = 2f;
+    public float returnDuration = 2f;
+
+    private CameraFollowActor cameraFollow;
+    private Vector3    initialCameraPosition;
+    private Quaternion initialCameraRotation;
+    private float      initialFOVOrSize;
 
     void Start()
     {
@@ -21,6 +27,18 @@ public class SceneSequence : MonoBehaviour
 
         if (targetCamera == null)
             targetCamera = Camera.main;
+
+        // Get CameraFollowActor directly from the camera GameObject
+        cameraFollow = targetCamera.GetComponent<CameraFollowActor>();
+        if (cameraFollow == null)
+            Debug.LogWarning("CameraFollowActor not found on camera!");
+
+        // Cache initial camera state before following starts
+        initialCameraPosition = targetCamera.transform.position;
+        initialCameraRotation = targetCamera.transform.rotation;
+        initialFOVOrSize      = targetCamera.orthographic
+            ? targetCamera.orthographicSize
+            : targetCamera.fieldOfView;
     }
 
     public void OnArrivedAtTarget()
@@ -37,40 +55,76 @@ public class SceneSequence : MonoBehaviour
         else
             Debug.LogWarning("RockingCradle reference is missing on SceneSequence!");
 
-        // Trigger camera zoom out
+        // Trigger camera sequence
         if (targetCamera != null)
-            StartCoroutine(ZoomOut());
+            StartCoroutine(CameraSequence());
         else
-            Debug.LogWarning("No camera found for zoom out!");
+            Debug.LogWarning("No camera found!");
     }
 
-    IEnumerator ZoomOut()
+    IEnumerator CameraSequence()
     {
-        float elapsed = 0f;
+        // Step 1 — disable follow script so we take full control
+        if (cameraFollow != null)
+            cameraFollow.enabled = false;
 
-        float startValue = targetCamera.orthographic
+        // Step 2 — zoom out
+        float startValue     = targetCamera.orthographic
             ? targetCamera.orthographicSize
             : targetCamera.fieldOfView;
 
-        // zoom out = increase the value by the percentage
-        float targetValue = startValue * (1f + zoomOutPercent / 100f);
+        float zoomedOutValue = startValue * (1f + zoomOutPercent / 100f);
 
+        float elapsed = 0f;
         while (elapsed < zoomDuration)
         {
             elapsed += Time.deltaTime;
             float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / zoomDuration));
 
             if (targetCamera.orthographic)
-                targetCamera.orthographicSize = Mathf.Lerp(startValue, targetValue, t);
+                targetCamera.orthographicSize = Mathf.Lerp(startValue, zoomedOutValue, t);
             else
-                targetCamera.fieldOfView = Mathf.Lerp(startValue, targetValue, t);
+                targetCamera.fieldOfView = Mathf.Lerp(startValue, zoomedOutValue, t);
 
             yield return null;
         }
 
+        // Step 3 — hold zoomed out for a moment
+        yield return new WaitForSeconds(1f);
+
+        // Step 4 — return to initial position, rotation and FOV/size
+        elapsed = 0f;
+        Vector3    fromPosition = targetCamera.transform.position;
+        Quaternion fromRotation = targetCamera.transform.rotation;
+        float      fromValue    = targetCamera.orthographic
+            ? targetCamera.orthographicSize
+            : targetCamera.fieldOfView;
+
+        while (elapsed < returnDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / returnDuration));
+
+            targetCamera.transform.position = Vector3.Lerp(fromPosition, initialCameraPosition, t);
+            targetCamera.transform.rotation = Quaternion.Lerp(fromRotation, initialCameraRotation, t);
+
+            if (targetCamera.orthographic)
+                targetCamera.orthographicSize = Mathf.Lerp(fromValue, initialFOVOrSize, t);
+            else
+                targetCamera.fieldOfView = Mathf.Lerp(fromValue, initialFOVOrSize, t);
+
+            yield return null;
+        }
+
+        // Lock to exact initial values
+        targetCamera.transform.position = initialCameraPosition;
+        targetCamera.transform.rotation = initialCameraRotation;
+
         if (targetCamera.orthographic)
-            targetCamera.orthographicSize = targetValue;
+            targetCamera.orthographicSize = initialFOVOrSize;
         else
-            targetCamera.fieldOfView = targetValue;
+            targetCamera.fieldOfView = initialFOVOrSize;
+
+        // Step 5 — camera stays at initial position, follow stays disabled
     }
 }

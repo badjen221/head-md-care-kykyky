@@ -1639,8 +1639,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   directionalLight: {fileID: 385600438}
-  fadeToDarkDuration: 5
-  nightHoldDuration: 3
+  fadeToDarkDuration: 10
+  nightHoldDuration: 5
   fadeToLightDuration: 10
   dayAngle: 50
   nightAngle: -30
@@ -1679,8 +1679,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   rockingCradle: {fileID: 2087304628}
   targetCamera: {fileID: 785359}
-  zoomOutSize: 10
-  zoomDuration: 2
+  zoomOutPercent: 50
+  zoomDuration: 5
+  returnDuration: 10
 --- !u!1 &1764242128 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
