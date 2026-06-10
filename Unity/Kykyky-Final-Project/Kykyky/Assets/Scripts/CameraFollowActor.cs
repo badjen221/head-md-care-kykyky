@@ -6,7 +6,7 @@ public class CameraFollowActor : MonoBehaviour
     [SerializeField] private Transform actor; // drag the actor GameObject here
 
     [Header("Position Behind Actor")]
-    [SerializeField] private Vector3 offset = new Vector3(0f, 3f, -5f);
+    [SerializeField] private Vector3 offset = new Vector3(0f, 1.5f, -1f);
     [SerializeField] private float transitionSpeed = 2f;
 
     private bool isFollowing = false;

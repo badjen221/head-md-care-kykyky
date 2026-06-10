@@ -6,7 +6,7 @@ public class RockingCradle : MonoBehaviour
     [Header("Rocking Settings")]
     public float rockAngle     = 15f;   // max degrees to rock side to side
     public float rockSpeed     = 1.5f;  // how fast it rocks
-    public int   rockCycles    = 5;     // how many back-and-forth swings before stopping
+    public int   rockCycles    = 20;     // how many back-and-forth swings before stopping
 
     [Header("Pivot")]
     // If your cradle's pivot point is not at the bottom center,
