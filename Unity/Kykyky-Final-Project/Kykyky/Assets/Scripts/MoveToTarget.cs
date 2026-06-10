@@ -29,9 +29,14 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     private bool isMoving = false;
     private bool wasInputHeld = false;
     public SceneSequence sceneSequence;
+    private Animator animator;
 
     void Start()
     {
+        animator = GetComponent<Animator>();  // ← this line is missing
+        if (animator == null)
+            Debug.LogWarning("No Animator found on " + gameObject.name);
+
         SetSoundsLoopActive(playOnMoveStart, false);
         SetSoundsLoopActive(playOnArrival, false);
     }
@@ -59,6 +64,10 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         Vector3 flatCurrent = new Vector3(currentPosition.x, 0f, currentPosition.z);
         Vector3 flatTarget = new Vector3(targetPosition.x, 0f, targetPosition.z);
         float distance = Vector3.Distance(flatCurrent, flatTarget);
+
+        // ← add these two lines
+        Debug.Log("Distance to target: " + distance);
+        Debug.Log("Stopping distance: " + stoppingDistance);
 
         if (distance <= stoppingDistance)
         {
@@ -102,6 +111,9 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         FlashEffect flashEffect = GetComponent<FlashEffect>();
         if (flashEffect != null)
             flashEffect.StopFlashing();
+
+        if (animator != null)
+            animator.SetBool("isMoving", true);
     }
 
     private void StopMoving(bool arrived = false)
@@ -113,18 +125,17 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
         SetSoundsLoopActive(playOnMoveStart, false);
 
+        if (animator != null)
+            animator.SetBool("isMoving", false);
+
         if (arrivedOnTarget)
         {
             SetSoundsLoopActive(stopOnMoveStart, false);
             SetSoundsLoopActive(playOnArrival, true);
-            sceneSequence.OnArrivedAtTarget();
-            /*if(DayNightCycle.Instance != null) {
-                DayNightCycle.Instance.PlayDayNightEffect();
-            }
+            if (sceneSequence != null)
+                sceneSequence.OnArrivedAtTarget();
             else
-            {
-                Debug.LogWarning("DayNightCycle instance not found. Make sure there is a DayNightCycle script in the scene.");
-            }*/
+                Debug.LogWarning("SceneSequence reference missing on MoveToTarget!");
         }
         else
         {
