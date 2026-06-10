@@ -3,7 +3,8 @@ using System.Collections;
 
 public class SceneSequence : MonoBehaviour
 {
-    public RockingCradle rockingCradle;
+    [Header("Rocking Object (optional)")]
+    public RockingCradle rockingObject;    // optional — leave empty if not needed
 
     [Header("Camera Zoom Out")]
     public Camera targetCamera;
@@ -18,13 +19,6 @@ public class SceneSequence : MonoBehaviour
 
     void Start()
     {
-        if (rockingCradle == null)
-        {
-            rockingCradle = FindObjectOfType<RockingCradle>();
-            if (rockingCradle == null)
-                Debug.LogWarning("RockingCradle not found in scene!");
-        }
-
         if (targetCamera == null)
             targetCamera = Camera.main;
 
@@ -49,11 +43,9 @@ public class SceneSequence : MonoBehaviour
         else
             Debug.LogWarning("DayNightCycle instance not found.");
 
-        // Trigger cradle rocking
-        if (rockingCradle != null)
-            rockingCradle.StartRocking();
-        else
-            Debug.LogWarning("RockingCradle reference is missing on SceneSequence!");
+        // Trigger rocking object — completely optional
+        if (rockingObject != null)
+            rockingObject.StartRocking();
 
         // Trigger camera sequence
         if (targetCamera != null)
@@ -124,7 +116,5 @@ public class SceneSequence : MonoBehaviour
             targetCamera.orthographicSize = initialFOVOrSize;
         else
             targetCamera.fieldOfView = initialFOVOrSize;
-
-        // Step 5 — camera stays at initial position, follow stays disabled
     }
 }
