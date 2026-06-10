@@ -8,9 +8,9 @@ public class SceneSequence : MonoBehaviour
 
     [Header("Camera Zoom Out")]
     public Camera targetCamera;
-    public float zoomOutPercent = 30f;
-    public float zoomDuration   = 2f;
-    public float returnDuration = 2f;
+    public float zoomOutPercent = 50f;
+    public float zoomDuration   = 5f;
+    public float returnDuration = 10f;
 
     private CameraFollowActor cameraFollow;
     private Vector3    initialCameraPosition;
