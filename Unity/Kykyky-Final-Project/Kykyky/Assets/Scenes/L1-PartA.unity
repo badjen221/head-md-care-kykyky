@@ -1618,6 +1618,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1763778611}
   - component: {fileID: 1763778610}
+  - component: {fileID: 1763778612}
   m_Layer: 0
   m_Name: SceneController
   m_TagString: Untagged
@@ -1664,6 +1665,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1763778612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763778609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c0e066b6f5f47749d41bd3d34a265e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  rockingCradle: {fileID: 2087304628}
 --- !u!1 &1764242128 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
@@ -1719,6 +1733,7 @@ MonoBehaviour:
   - {fileID: 1200632834}
   arrivedOnTarget: 0
   movementActivated: 0
+  sceneSequence: {fileID: 1763778612}
 --- !u!1001 &1997417621
 PrefabInstance:
   m_ObjectHideFlags: 0
