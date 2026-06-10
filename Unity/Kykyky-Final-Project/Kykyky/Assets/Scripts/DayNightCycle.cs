@@ -10,9 +10,9 @@ public class DayNightCycle : MonoBehaviour
     public Light directionalLight;
 
     [Header("Timing")]
-    public float fadeToDarkDuration = 5f;
-    public float nightHoldDuration = 3f;
-    public float fadeToLightDuration = 5f;
+    public float fadeToDarkDuration = 10f;
+    public float nightHoldDuration = 5f;
+    public float fadeToLightDuration = 10f;
 
     [Header("Sun Rotation")]
     public float dayAngle = 50f;
