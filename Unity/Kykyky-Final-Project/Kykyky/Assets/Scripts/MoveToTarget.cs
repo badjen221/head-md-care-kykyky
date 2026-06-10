@@ -30,8 +30,15 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     private bool wasInputHeld = false;
     public SceneSequence sceneSequence;
 
+    public string crawlClipName = "crawl";  // must match the clip name exactly
+    private Animation crawlAnimation;
+
     void Start()
     {
+        crawlAnimation = GetComponent<Animation>();
+        if (crawlAnimation == null)
+            Debug.LogWarning("No Animation component found on " + gameObject.name);
+
         SetSoundsLoopActive(playOnMoveStart, false);
         SetSoundsLoopActive(playOnArrival, false);
     }
@@ -102,6 +109,11 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         FlashEffect flashEffect = GetComponent<FlashEffect>();
         if (flashEffect != null)
             flashEffect.StopFlashing();
+
+        if (crawlAnimation != null)
+        {
+            crawlAnimation.Play(crawlClipName);
+        }
     }
 
     private void StopMoving(bool arrived = false)
@@ -112,6 +124,11 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         arrivedOnTarget = arrived;
 
         SetSoundsLoopActive(playOnMoveStart, false);
+
+        if (crawlAnimation != null)
+        {
+            crawlAnimation.Stop();
+        }   
 
         if (arrivedOnTarget)
         {
