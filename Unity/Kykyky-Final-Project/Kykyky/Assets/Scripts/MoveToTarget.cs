@@ -65,6 +65,10 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         Vector3 flatTarget = new Vector3(targetPosition.x, 0f, targetPosition.z);
         float distance = Vector3.Distance(flatCurrent, flatTarget);
 
+        // ← add these two lines
+        Debug.Log("Distance to target: " + distance);
+        Debug.Log("Stopping distance: " + stoppingDistance);
+
         if (distance <= stoppingDistance)
         {
             StopMoving(true);
@@ -128,7 +132,10 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         {
             SetSoundsLoopActive(stopOnMoveStart, false);
             SetSoundsLoopActive(playOnArrival, true);
-            sceneSequence.OnArrivedAtTarget();
+            if (sceneSequence != null)
+                sceneSequence.OnArrivedAtTarget();
+            else
+                Debug.LogWarning("SceneSequence reference missing on MoveToTarget!");
         }
         else
         {
