@@ -66,8 +66,8 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         float distance = Vector3.Distance(flatCurrent, flatTarget);
 
         // ← add these two lines
-        //Debug.Log("Distance to target: " + distance);
-        //Debug.Log("Stopping distance: " + stoppingDistance);
+        Debug.Log("Distance to target: " + distance);
+        Debug.Log("Stopping distance: " + stoppingDistance);
 
         if (distance <= stoppingDistance)
         {
@@ -100,6 +100,8 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     private void StartMoving()
     {
+        Debug.Log("StartMoving called");
+
         if (isMoving) return;
 
         isMoving = true;
@@ -118,6 +120,8 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     private void StopMoving(bool arrived = false)
     {
+        Debug.Log("StopMoving called with arrived = " + arrived);
+
         if (!isMoving && !arrived) return;
 
         isMoving = false;
