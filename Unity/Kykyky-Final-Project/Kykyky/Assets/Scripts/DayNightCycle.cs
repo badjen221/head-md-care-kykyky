@@ -38,6 +38,9 @@ public class DayNightCycle : MonoBehaviour
 
     private bool isRunning = false;
 
+    public GameObject dayscape;
+    public GameObject nightscape;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -73,6 +76,9 @@ public class DayNightCycle : MonoBehaviour
         directionalLight.intensity = dayIntensity;
         directionalLight.color = dayLightColor;
         RenderSettings.ambientLight = dayAmbientColor;
+
+        if (dayscape != null) dayscape.SetActive(true);
+        if (nightscape != null) nightscape.SetActive(false);
     }
 
     private void SetNightState()
@@ -81,6 +87,9 @@ public class DayNightCycle : MonoBehaviour
         directionalLight.intensity = nightIntensity;
         directionalLight.color = nightLightColor;
         RenderSettings.ambientLight = nightAmbientColor;
+
+        if (dayscape != null) dayscape.SetActive(false);
+        if (nightscape != null) nightscape.SetActive(true);
     }
 
     // -------------------------
@@ -212,5 +221,17 @@ public class DayNightCycle : MonoBehaviour
         directionalLight.intensity          = toIntensity;
         directionalLight.color              = toLightColor;
         RenderSettings.ambientLight         = toAmbient;
+
+        // Swap day/night objects
+        if (toDay)
+        {
+            if (dayscape != null) dayscape.SetActive(true);
+            if (nightscape != null) nightscape.SetActive(false);
+        }
+        else
+        {
+            if (dayscape != null) dayscape.SetActive(false);
+            if (nightscape != null) nightscape.SetActive(true);
+        }
     }
 }
