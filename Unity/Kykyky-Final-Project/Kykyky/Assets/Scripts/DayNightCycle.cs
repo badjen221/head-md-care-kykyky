@@ -40,6 +40,7 @@ public class DayNightCycle : MonoBehaviour
 
     public GameObject dayscape;
     public GameObject nightscape;
+    public float objectFadeDuration = 2f;
 
     void Awake()
     {
@@ -232,6 +233,51 @@ public class DayNightCycle : MonoBehaviour
         {
             if (dayscape != null) dayscape.SetActive(false);
             if (nightscape != null) nightscape.SetActive(true);
+        }
+    }
+
+    private IEnumerator FadeObjects(GameObject fadeOut, GameObject fadeIn, float duration)
+    {
+        // Make sure both are active during transition
+        if (fadeOut != null) fadeOut.SetActive(true);
+        if (fadeIn != null)
+        {
+            fadeIn.SetActive(true);
+            SetObjectAlpha(fadeIn, 0f);
+        }
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
+
+            if (fadeOut != null) SetObjectAlpha(fadeOut, 1f - t);
+            if (fadeIn != null)  SetObjectAlpha(fadeIn, t);
+
+            yield return null;
+        }
+
+        // Snap to final values
+        if (fadeOut != null)
+        {
+            SetObjectAlpha(fadeOut, 0f);
+            fadeOut.SetActive(false);
+        }
+        if (fadeIn != null) SetObjectAlpha(fadeIn, 1f);
+    }
+
+    private void SetObjectAlpha(GameObject obj, float alpha)
+    {
+        foreach (Renderer renderer in obj.GetComponentsInChildren<Renderer>())
+        {
+            foreach (Material mat in renderer.materials)
+            {
+                // Works for Standard shader and URP/Lit with surface type Transparent
+                Color c = mat.color;
+                c.a = alpha;
+                mat.color = c;
+            }
         }
     }
 }
