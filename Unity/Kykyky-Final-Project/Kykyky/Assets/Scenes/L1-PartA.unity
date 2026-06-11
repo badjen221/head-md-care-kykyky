@@ -1650,6 +1650,7 @@ MonoBehaviour:
   nightLightColor: {r: 0.05, g: 0.05, b: 0.15, a: 1}
   dayAmbientColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   nightAmbientColor: {r: 0.02, g: 0.02, b: 0.05, a: 1}
+  startAtNight: 0
 --- !u!4 &1763778611
 Transform:
   m_ObjectHideFlags: 0
@@ -1659,7 +1660,7 @@ Transform:
   m_GameObject: {fileID: 1763778609}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.08468, y: -0, z: -3.38626}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1682,6 +1683,8 @@ MonoBehaviour:
   zoomOutPercent: 50
   zoomDuration: 5
   returnDuration: 10
+  nextSceneName: L1-PartB
+  startFromNightToDay: 0
 --- !u!1 &1764242128 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
@@ -1727,7 +1730,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveToTarget
   target: {fileID: 180204972}
-  moveSpeed: 0.2
+  moveSpeed: 0.8
   stoppingDistance: 0.8
   stopOnMoveStart:
   - {fileID: 1547569592}

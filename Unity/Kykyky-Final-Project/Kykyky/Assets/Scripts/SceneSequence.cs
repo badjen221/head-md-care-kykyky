@@ -4,7 +4,7 @@ using System.Collections;
 public class SceneSequence : MonoBehaviour
 {
     [Header("Rocking Object (optional)")]
-    public RockingCradle rockingObject;    // optional — leave empty if not needed
+    public RockingCradle rockingObject;
 
     [Header("Camera Zoom Out")]
     public Camera targetCamera;
@@ -12,39 +12,51 @@ public class SceneSequence : MonoBehaviour
     public float zoomDuration   = 5f;
     public float returnDuration = 10f;
 
+    [Header("Scene Transition")]
+    public string nextSceneName = "";
+
+    [Header("Scene Entry — tick ON if this scene starts at night and should fade to day")]
+    public bool fadeFromNightToDayOnStart = false;
+
     private CameraFollowActor cameraFollow;
     private Vector3    initialCameraPosition;
     private Quaternion initialCameraRotation;
     private float      initialFOVOrSize;
-
-    [Header("Scene Transition")]          // ← add this
-    public string nextSceneName = "L1-PartB";     // ← and this
 
     void Start()
     {
         if (targetCamera == null)
             targetCamera = Camera.main;
 
-        // Get CameraFollowActor directly from the camera GameObject
         cameraFollow = targetCamera.GetComponent<CameraFollowActor>();
         if (cameraFollow == null)
             Debug.LogWarning("CameraFollowActor not found on camera!");
 
-        // Cache initial camera state before following starts
         initialCameraPosition = targetCamera.transform.position;
         initialCameraRotation = targetCamera.transform.rotation;
         initialFOVOrSize      = targetCamera.orthographic
             ? targetCamera.orthographicSize
             : targetCamera.fieldOfView;
+
+        // If this scene starts at night, fade to day automatically
+        if (fadeFromNightToDayOnStart)
+        {
+            if (DayNightCycle.Instance != null)
+                DayNightCycle.Instance.FadeToDay();
+            else
+                Debug.LogWarning("DayNightCycle instance not found.");
+        }
     }
 
     public void OnArrivedAtTarget()
     {
-        // Trigger day/night effect — with optional scene transition
         if (DayNightCycle.Instance != null)
-            DayNightCycle.Instance.PlayDayNightEffect(
-                string.IsNullOrEmpty(nextSceneName) ? null : nextSceneName
-            );
+        {
+            if (string.IsNullOrEmpty(nextSceneName))
+                DayNightCycle.Instance.FadeToDark();
+            else
+                StartCoroutine(FadeAndLoad(nextSceneName));
+        }
         else
             Debug.LogWarning("DayNightCycle instance not found.");
 
@@ -57,6 +69,14 @@ public class SceneSequence : MonoBehaviour
             StartCoroutine(CameraSequence());
         else
             Debug.LogWarning("No camera found!");
+    }
+
+    // Waits for fade to complete then loads the scene
+    IEnumerator FadeAndLoad(string sceneName)
+    {
+        DayNightCycle.Instance.FadeToDark();
+        yield return new WaitUntil(() => !DayNightCycle.Instance.IsRunning);
+        DayNightCycle.Instance.LoadScene(sceneName);
     }
 
     IEnumerator CameraSequence()
@@ -113,7 +133,7 @@ public class SceneSequence : MonoBehaviour
             yield return null;
         }
 
-        // Lock to exact initial values
+        // Lock to exact final values
         targetCamera.transform.position = initialCameraPosition;
         targetCamera.transform.rotation = initialCameraRotation;
 

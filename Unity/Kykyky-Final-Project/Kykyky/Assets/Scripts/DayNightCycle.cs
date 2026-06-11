@@ -14,6 +14,9 @@ public class DayNightCycle : MonoBehaviour
     public float nightHoldDuration = 5f;
     public float fadeToLightDuration = 10f;
 
+    [Header("Scene Transition")]
+    public float sceneTransitionHoldDuration = 3f;
+
     [Header("Sun Rotation")]
     public float dayAngle = 50f;
     public float nightAngle = -30f;
@@ -31,7 +34,7 @@ public class DayNightCycle : MonoBehaviour
     public Color nightAmbientColor = new Color(0.02f, 0.02f, 0.05f);
 
     [Header("Scene Entry")]
-    public bool startAtNight = false;
+    //public bool startAtNight = false;
 
     private bool isRunning = false;
 
@@ -54,11 +57,15 @@ public class DayNightCycle : MonoBehaviour
             return;
         }
 
-        if (startAtNight)
+        /*if (startAtNight)
             SetNightState();
-        else
+        else*/
             SetDayState();
     }
+
+    // -------------------------
+    // State setters
+    // -------------------------
 
     private void SetDayState()
     {
@@ -76,61 +83,114 @@ public class DayNightCycle : MonoBehaviour
         RenderSettings.ambientLight = nightAmbientColor;
     }
 
-    // No scene transition:  DayNightCycle.Instance.PlayDayNightEffect();
-    // With scene transition: DayNightCycle.Instance.PlayDayNightEffect("SceneName");
-    public void PlayDayNightEffect(string sceneToLoad = null)
+    // -------------------------
+    // Public methods
+    // -------------------------
+
+    /// Day -> Night only
+    /// DayNightCycle.Instance.FadeToDark();
+    public void FadeToDark()
     {
         if (!isRunning)
-            StartCoroutine(DayNightSequence(sceneToLoad));
+            StartCoroutine(FadeToDarkSequence());
     }
 
-    private IEnumerator DayNightSequence(string sceneToLoad = null)
+    /// Night -> Day only
+    /// DayNightCycle.Instance.FadeToDay();
+    public void FadeToDay()
+    {
+        if (!isRunning)
+            StartCoroutine(FadeToDaySequence());
+    }
+
+    /// Day -> Night -> Day (no scene load)
+    /// DayNightCycle.Instance.PlayFullCycle();
+    public void PlayFullCycle()
+    {
+        if (!isRunning)
+            StartCoroutine(FullCycleSequence());
+    }
+
+    /// Load a scene while already dark — call this AFTER FadeToDark() completes
+    /// DayNightCycle.Instance.LoadScene("SceneName");
+    public void LoadScene(string sceneName)
+    {
+        if (!isRunning)
+            StartCoroutine(LoadSceneSequence(sceneName));
+    }
+
+    /// Check if a fade or load is currently running
+    public bool IsRunning => isRunning;
+
+    // -------------------------
+    // Sequences
+    // -------------------------
+
+    private IEnumerator FadeToDarkSequence()
+    {
+        isRunning = true;
+        yield return StartCoroutine(Fade(false, fadeToDarkDuration));
+        isRunning = false;
+    }
+
+    private IEnumerator FadeToDaySequence()
+    {
+        isRunning = true;
+        yield return StartCoroutine(Fade(true, fadeToLightDuration));
+        isRunning = false;
+    }
+
+    private IEnumerator FullCycleSequence()
+    {
+        isRunning = true;
+        yield return StartCoroutine(Fade(false, fadeToDarkDuration));
+        yield return new WaitForSeconds(nightHoldDuration);
+        yield return StartCoroutine(Fade(true, fadeToLightDuration));
+        isRunning = false;
+    }
+
+    private IEnumerator LoadSceneSequence(string sceneName)
     {
         isRunning = true;
 
-        // Day -> Night
-        yield return StartCoroutine(Fade(false, fadeToDarkDuration));
+        Debug.Log("Loading scene: '" + sceneName + "'");
 
-        if (sceneToLoad != null)
-        {
-            Debug.Log("Attempting to load scene: '" + sceneToLoad + "'");
-            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneToLoad);
-            asyncLoad.allowSceneActivation = false;
+        // Start loading in background
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        asyncLoad.allowSceneActivation = false;
 
-            while (asyncLoad.progress < 0.9f)
-                yield return null;
-
-            yield return new WaitForSeconds(nightHoldDuration);
-
-            // Swap scene while dark — player sees nothing
-            asyncLoad.allowSceneActivation = true;
+        // Wait until scene is ready
+        while (asyncLoad.progress < 0.9f)
             yield return null;
 
-            // Re-grab the light from the new scene
-            if (directionalLight == null)
-                directionalLight = RenderSettings.sun;
-        }
-        else
-        {
-            yield return new WaitForSeconds(nightHoldDuration);
-        }
+        // Hold in darkness before swapping
+        yield return new WaitForSeconds(sceneTransitionHoldDuration);
 
-        // Night -> Day
-        yield return StartCoroutine(Fade(true, fadeToLightDuration));
+        // Activate the scene
+        asyncLoad.allowSceneActivation = true;
+        yield return null;
+
+        // Re-grab the light from the new scene
+        if (directionalLight == null)
+            directionalLight = RenderSettings.sun;
 
         isRunning = false;
     }
 
+    // -------------------------
+    // Core fade
+    // -------------------------
+
     private IEnumerator Fade(bool toDay, float duration)
     {
-        float fromAngle       = toDay ? nightAngle     : dayAngle;
-        float toAngle         = toDay ? dayAngle       : nightAngle;
-        float fromIntensity   = toDay ? nightIntensity : dayIntensity;
-        float toIntensity     = toDay ? dayIntensity   : nightIntensity;
-        Color fromLightColor  = toDay ? nightLightColor : dayLightColor;
-        Color toLightColor    = toDay ? dayLightColor   : nightLightColor;
-        Color fromAmbient     = toDay ? nightAmbientColor : dayAmbientColor;
-        Color toAmbient       = toDay ? dayAmbientColor   : nightAmbientColor;
+        float fromAngle      = toDay ? nightAngle        : dayAngle;
+        float toAngle        = toDay ? dayAngle          : nightAngle;
+        float fromIntensity  = toDay ? nightIntensity    : dayIntensity;
+        float toIntensity    = toDay ? dayIntensity      : nightIntensity;
+        Color fromLightColor = toDay ? nightLightColor   : dayLightColor;
+        Color toLightColor   = toDay ? dayLightColor     : nightLightColor;
+        Color fromAmbient    = toDay ? nightAmbientColor : dayAmbientColor;
+        Color toAmbient      = toDay ? dayAmbientColor   : nightAmbientColor;
 
         float elapsed = 0f;
 
