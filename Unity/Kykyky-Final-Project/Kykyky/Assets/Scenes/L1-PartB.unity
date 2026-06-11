@@ -673,9 +673,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   directionalLight: {fileID: 1469957160}
   fadeToDarkDuration: 10
-  nightHoldDuration: 5
+  nightHoldDuration: 1
   fadeToLightDuration: 10
-  sceneTransitionHoldDuration: 3
+  sceneTransitionHoldDuration: 0.5
   dayAngle: 50
   nightAngle: -30
   dayIntensity: 2

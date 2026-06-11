@@ -17,6 +17,7 @@ public class SceneSequence : MonoBehaviour
 
     [Header("Scene Entry — tick ON if this scene starts at night and should fade to day")]
     public bool fadeFromNightToDayOnStart = false;
+    public float fadeOutDelay = 2f; // ← delay before fade out starts
 
     private CameraFollowActor cameraFollow;
     private Vector3    initialCameraPosition;
@@ -47,7 +48,7 @@ public class SceneSequence : MonoBehaviour
                 Debug.LogWarning("DayNightCycle instance not found.");
 
             if (ScreenFader.Instance != null)
-                ScreenFader.Instance.FadeOut();
+                StartCoroutine(DelayedFadeOut());
             else
                 Debug.LogWarning("ScreenFader instance not found.");
         }
@@ -55,16 +56,6 @@ public class SceneSequence : MonoBehaviour
 
     public void OnArrivedAtTarget()
     {
-        if (DayNightCycle.Instance != null)
-        {
-            if (string.IsNullOrEmpty(nextSceneName))
-                DayNightCycle.Instance.FadeToDark();
-            else
-                StartCoroutine(FadeAndLoad(nextSceneName));
-        }
-        else
-            Debug.LogWarning("DayNightCycle instance not found.");
-
         // Trigger rocking object — completely optional
         if (rockingObject != null)
             rockingObject.StartRocking();
@@ -74,33 +65,17 @@ public class SceneSequence : MonoBehaviour
             StartCoroutine(CameraSequence());
         else
             Debug.LogWarning("No camera found!");
-    }
 
-    // Waits for fade to complete then loads the scene
-    /*IEnumerator FadeAndLoad(string sceneName)
-    {
-        DayNightCycle.Instance.FadeToDark();
-        yield return new WaitUntil(() => !DayNightCycle.Instance.IsRunning);
-        DayNightCycle.Instance.LoadScene(sceneName);
-    }*/
-    IEnumerator FadeAndLoad(string sceneName)
-    {
-        // Fade light to dark AND fade screen to black simultaneously
-        DayNightCycle.Instance.FadeToDark();
-
-        if (ScreenFader.Instance != null)
-            ScreenFader.Instance.FadeIn();
-
-        // Wait for both to finish
-        yield return new WaitUntil(() =>
-            !DayNightCycle.Instance.IsRunning &&
-            !ScreenFader.Instance.IsFading);
-
-        // Hold in black
-        yield return new WaitForSeconds(DayNightCycle.Instance.sceneTransitionHoldDuration);
-
-        // Load scene — Scene B handles FadeOut itself
-        DayNightCycle.Instance.LoadScene(sceneName);
+        // Start day/night and transition after camera finishes
+        if (DayNightCycle.Instance != null)
+        {
+            if (string.IsNullOrEmpty(nextSceneName))
+                DayNightCycle.Instance.FadeToDark();
+            else
+                StartCoroutine(FadeAndLoad(nextSceneName));
+        }
+        else
+            Debug.LogWarning("DayNightCycle instance not found.");
     }
 
     IEnumerator CameraSequence()
@@ -166,4 +141,43 @@ public class SceneSequence : MonoBehaviour
         else
             targetCamera.fieldOfView = initialFOVOrSize;
     }
+
+    IEnumerator FadeAndLoad(string sceneName)
+    {
+        // Wait for camera sequence to fully finish first
+        float totalCameraDuration = zoomDuration + 1f + returnDuration;
+        yield return new WaitForSeconds(totalCameraDuration);
+
+        // Fade light to dark first
+        DayNightCycle.Instance.FadeToDark();
+
+        // Wait for day/night fade to fully finish
+        yield return new WaitUntil(() => !DayNightCycle.Instance.IsRunning);
+
+        // Start loading scene in background BEFORE fading to black
+        AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+        asyncLoad.allowSceneActivation = false;
+
+        // Fade screen to black while scene loads in background
+        if (ScreenFader.Instance != null)
+            ScreenFader.Instance.FadeIn();
+
+        // Wait for BOTH black fade and scene load to finish
+        yield return new WaitUntil(() =>
+            (!ScreenFader.Instance.IsFading) &&
+            asyncLoad.progress >= 0.9f);
+
+        // Hold in black just briefly
+        yield return new WaitForSeconds(DayNightCycle.Instance.sceneTransitionHoldDuration);
+
+        // Activate scene — already loaded, switches instantly
+        asyncLoad.allowSceneActivation = true;
+    }
+
+    IEnumerator DelayedFadeOut()
+    {
+        yield return new WaitForSeconds(fadeOutDelay); // ← adjust this
+        ScreenFader.Instance.FadeOut();
+    }
+    
 }
