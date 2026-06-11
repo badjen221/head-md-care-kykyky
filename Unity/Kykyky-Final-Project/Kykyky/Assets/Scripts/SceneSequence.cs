@@ -17,6 +17,9 @@ public class SceneSequence : MonoBehaviour
     private Quaternion initialCameraRotation;
     private float      initialFOVOrSize;
 
+    [Header("Scene Transition")]          // ← add this
+    public string nextSceneName = "L1-PartB";     // ← and this
+
     void Start()
     {
         if (targetCamera == null)
@@ -37,9 +40,11 @@ public class SceneSequence : MonoBehaviour
 
     public void OnArrivedAtTarget()
     {
-        // Trigger day/night effect
+        // Trigger day/night effect — with optional scene transition
         if (DayNightCycle.Instance != null)
-            DayNightCycle.Instance.PlayDayNightEffect();
+            DayNightCycle.Instance.PlayDayNightEffect(
+                string.IsNullOrEmpty(nextSceneName) ? null : nextSceneName
+            );
         else
             Debug.LogWarning("DayNightCycle instance not found.");
 
