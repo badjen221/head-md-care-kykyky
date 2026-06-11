@@ -1642,6 +1642,7 @@ MonoBehaviour:
   fadeToDarkDuration: 10
   nightHoldDuration: 5
   fadeToLightDuration: 10
+  sceneTransitionHoldDuration: 5
   dayAngle: 50
   nightAngle: -30
   dayIntensity: 2
@@ -1650,7 +1651,6 @@ MonoBehaviour:
   nightLightColor: {r: 0.05, g: 0.05, b: 0.15, a: 1}
   dayAmbientColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   nightAmbientColor: {r: 0.02, g: 0.02, b: 0.05, a: 1}
-  startAtNight: 0
 --- !u!4 &1763778611
 Transform:
   m_ObjectHideFlags: 0
@@ -1684,7 +1684,7 @@ MonoBehaviour:
   zoomDuration: 5
   returnDuration: 10
   nextSceneName: L1-PartB
-  startFromNightToDay: 0
+  fadeFromNightToDayOnStart: 0
 --- !u!1 &1764242128 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 74642d0c0ce5e49b6ba2becf2e10c6e2, type: 3}
