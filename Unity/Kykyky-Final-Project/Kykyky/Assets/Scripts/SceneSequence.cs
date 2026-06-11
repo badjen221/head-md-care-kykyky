@@ -72,11 +72,37 @@ public class SceneSequence : MonoBehaviour
     }
 
     // Waits for fade to complete then loads the scene
-    IEnumerator FadeAndLoad(string sceneName)
+    /*IEnumerator FadeAndLoad(string sceneName)
     {
         DayNightCycle.Instance.FadeToDark();
         yield return new WaitUntil(() => !DayNightCycle.Instance.IsRunning);
         DayNightCycle.Instance.LoadScene(sceneName);
+    }*/
+    IEnumerator FadeAndLoad(string sceneName)
+    {
+        // Fade light to dark AND fade screen to black simultaneously
+        DayNightCycle.Instance.FadeToDark();
+
+        if (ScreenFader.Instance != null)
+            ScreenFader.Instance.FadeIn();
+
+        // Wait for both to finish
+        yield return new WaitUntil(() =>
+            !DayNightCycle.Instance.IsRunning &&
+            !ScreenFader.Instance.IsFading);
+
+        // Hold in black
+        yield return new WaitForSeconds(DayNightCycle.Instance.sceneTransitionHoldDuration);
+
+        // Load scene
+        DayNightCycle.Instance.LoadScene(sceneName);
+
+        // Wait for scene to load
+        yield return new WaitUntil(() => !DayNightCycle.Instance.IsRunning);
+
+        // Fade screen back to clear in new scene
+        if (ScreenFader.Instance != null)
+            ScreenFader.Instance.FadeOut();
     }
 
     IEnumerator CameraSequence()

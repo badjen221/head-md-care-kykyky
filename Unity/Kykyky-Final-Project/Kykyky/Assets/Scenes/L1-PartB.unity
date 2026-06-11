@@ -684,7 +684,6 @@ MonoBehaviour:
   nightLightColor: {r: 0.05, g: 0.05, b: 0.15, a: 1}
   dayAmbientColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   nightAmbientColor: {r: 0.02, g: 0.02, b: 0.05, a: 1}
-  startAtNight: 1
 --- !u!4 &459597739
 Transform:
   m_ObjectHideFlags: 0
@@ -901,7 +900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveToTarget
   target: {fileID: 951338796}
-  moveSpeed: 0.8
+  moveSpeed: 0.2
   stoppingDistance: 0.2
   stopOnMoveStart:
   - {fileID: 1927321262}
