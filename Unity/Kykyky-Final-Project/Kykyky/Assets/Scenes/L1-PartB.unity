@@ -589,7 +589,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 12466b6e13e4945c3a8fd8981a7bf470, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: f348ec13b4023406ebe868a30b7e69bc, type: 2}
+      objectReference: {fileID: 9100000, guid: 0e8368d0d1dc84eabbcd6f784c9a51f2, type: 2}
     - target: {fileID: 5866666021909216657, guid: 12466b6e13e4945c3a8fd8981a7bf470, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
@@ -990,7 +990,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveToTarget
   target: {fileID: 951338796}
-  moveSpeed: 0.2
+  moveSpeed: 0.05
   stoppingDistance: 0.2
   stopOnMoveStart:
   - {fileID: 1927321262}
