@@ -990,7 +990,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveToTarget
   target: {fileID: 951338796}
-  moveSpeed: 0.05
+  moveSpeed: 0.2
   stoppingDistance: 0.2
   stopOnMoveStart:
   - {fileID: 1927321262}
@@ -1865,7 +1865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollowActor
   actor: {fileID: 378657472}
-  offset: {x: 1, y: 1, z: 0}
+  offset: {x: 0, y: 1, z: -0.8}
   transitionSpeed: 2
 --- !u!114 &1644242496
 MonoBehaviour:

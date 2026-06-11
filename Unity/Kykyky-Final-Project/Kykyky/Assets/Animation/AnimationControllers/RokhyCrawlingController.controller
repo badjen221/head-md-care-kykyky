@@ -8,7 +8,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BabyCrawling
-  m_Speed: 10
+  m_Speed: 20
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1279323369589018836}
@@ -58,7 +58,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CrawlingControllerNew
+  m_Name: RokhyCrawlingController
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: isMoving
@@ -80,32 +80,6 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!1102 &3500785757714697371
-AnimatorState:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Falling
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: -4092633118735577736, guid: b735b38b9c5384b4e9fcdbe128381cc9, type: 3}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
 --- !u!1102 &4571319287255104328
 AnimatorState:
   serializedVersion: 6
@@ -173,9 +147,6 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -2080034652095274028}
     m_Position: {x: 380, y: 280, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 3500785757714697371}
-    m_Position: {x: 771.5, y: 121.75, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
