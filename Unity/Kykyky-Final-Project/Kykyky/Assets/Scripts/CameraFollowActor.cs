@@ -7,6 +7,7 @@ public class CameraFollowActor : MonoBehaviour
 
     [Header("Position Behind Actor")]
     [SerializeField] private Vector3 offset = new Vector3(0f, 1.5f, -1f);
+    [Range(0.1f, 10f)]
     [SerializeField] private float transitionSpeed = 2f;
 
     private bool isFollowing = false;
