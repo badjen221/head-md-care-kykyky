@@ -136,6 +136,11 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         {
             SetSoundsLoopActive(stopOnMoveStart, false);
             SetSoundsLoopActive(playOnArrival, true);
+
+            if (animator != null)
+                animator.SetBool("isTargetArrived", true); 
+                 Debug.Log("isTargetArrived set to TRUE on " + gameObject.name); 
+
             if (sceneSequence != null)
                 sceneSequence.OnArrivedAtTarget();
             else
