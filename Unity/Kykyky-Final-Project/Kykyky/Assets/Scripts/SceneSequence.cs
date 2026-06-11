@@ -45,6 +45,11 @@ public class SceneSequence : MonoBehaviour
                 DayNightCycle.Instance.FadeToDay();
             else
                 Debug.LogWarning("DayNightCycle instance not found.");
+
+            if (ScreenFader.Instance != null)
+                ScreenFader.Instance.FadeOut();
+            else
+                Debug.LogWarning("ScreenFader instance not found.");
         }
     }
 
@@ -94,15 +99,8 @@ public class SceneSequence : MonoBehaviour
         // Hold in black
         yield return new WaitForSeconds(DayNightCycle.Instance.sceneTransitionHoldDuration);
 
-        // Load scene
+        // Load scene — Scene B handles FadeOut itself
         DayNightCycle.Instance.LoadScene(sceneName);
-
-        // Wait for scene to load
-        yield return new WaitUntil(() => !DayNightCycle.Instance.IsRunning);
-
-        // Fade screen back to clear in new scene
-        if (ScreenFader.Instance != null)
-            ScreenFader.Instance.FadeOut();
     }
 
     IEnumerator CameraSequence()
