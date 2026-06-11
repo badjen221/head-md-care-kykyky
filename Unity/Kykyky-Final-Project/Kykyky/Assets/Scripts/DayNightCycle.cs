@@ -1,9 +1,9 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class DayNightCycle : MonoBehaviour
 {
-    // Singleton access
     public static DayNightCycle Instance { get; private set; }
 
     [Header("Sun")]
@@ -13,6 +13,9 @@ public class DayNightCycle : MonoBehaviour
     public float fadeToDarkDuration = 10f;
     public float nightHoldDuration = 5f;
     public float fadeToLightDuration = 10f;
+
+    [Header("Scene Transition")]
+    public float sceneTransitionHoldDuration = 3f;
 
     [Header("Sun Rotation")]
     public float dayAngle = 50f;
@@ -30,120 +33,184 @@ public class DayNightCycle : MonoBehaviour
     public Color dayAmbientColor = new Color(0.5f, 0.5f, 0.5f);
     public Color nightAmbientColor = new Color(0.02f, 0.02f, 0.05f);
 
+    [Header("Scene Entry")]
+    //public bool startAtNight = false;
+
     private bool isRunning = false;
 
     void Awake()
     {
-        // Singleton setup
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
-            return;
+            Destroy(Instance.gameObject);
         }
 
         Instance = this;
+        DontDestroyOnLoad(gameObject);
 
-        // Use Unity's configured Sun Source if not assigned manually
         if (directionalLight == null)
             directionalLight = RenderSettings.sun;
 
         if (directionalLight == null)
         {
-            Debug.LogError("DayNightCycle: No Directional Light assigned and no Sun Source configured.");
+            Debug.LogError("DayNightCycle: No Directional Light assigned.");
             return;
         }
 
-        SetDayState();
+        /*if (startAtNight)
+            SetNightState();
+        else*/
+            SetDayState();
     }
+
+    // -------------------------
+    // State setters
+    // -------------------------
 
     private void SetDayState()
     {
-        directionalLight.transform.rotation =
-            Quaternion.Euler(dayAngle, -30f, 0f);
-
+        directionalLight.transform.rotation = Quaternion.Euler(dayAngle, -30f, 0f);
         directionalLight.intensity = dayIntensity;
         directionalLight.color = dayLightColor;
-
         RenderSettings.ambientLight = dayAmbientColor;
     }
 
-    /// <summary>
-    /// Public method that can be called from anywhere:
-    /// DayNightCycle.Instance.PlayDayNightEffect();
-    /// </summary>
-    public void PlayDayNightEffect()
+    private void SetNightState()
     {
-        if (!isRunning)
-            StartCoroutine(DayNightSequence());
+        directionalLight.transform.rotation = Quaternion.Euler(nightAngle, -30f, 0f);
+        directionalLight.intensity = nightIntensity;
+        directionalLight.color = nightLightColor;
+        RenderSettings.ambientLight = nightAmbientColor;
     }
 
-    private IEnumerator DayNightSequence()
+    // -------------------------
+    // Public methods
+    // -------------------------
+
+    /// Day -> Night only
+    /// DayNightCycle.Instance.FadeToDark();
+    public void FadeToDark()
+    {
+        if (!isRunning)
+            StartCoroutine(FadeToDarkSequence());
+    }
+
+    /// Night -> Day only
+    /// DayNightCycle.Instance.FadeToDay();
+    public void FadeToDay()
+    {
+        if (!isRunning)
+            StartCoroutine(FadeToDaySequence());
+    }
+
+    /// Day -> Night -> Day (no scene load)
+    /// DayNightCycle.Instance.PlayFullCycle();
+    public void PlayFullCycle()
+    {
+        if (!isRunning)
+            StartCoroutine(FullCycleSequence());
+    }
+
+    /// Load a scene while already dark — call this AFTER FadeToDark() completes
+    /// DayNightCycle.Instance.LoadScene("SceneName");
+    public void LoadScene(string sceneName)
+    {
+        if (!isRunning)
+            StartCoroutine(LoadSceneSequence(sceneName));
+    }
+
+    /// Check if a fade or load is currently running
+    public bool IsRunning => isRunning;
+
+    // -------------------------
+    // Sequences
+    // -------------------------
+
+    private IEnumerator FadeToDarkSequence()
+    {
+        isRunning = true;
+        yield return StartCoroutine(Fade(false, fadeToDarkDuration));
+        isRunning = false;
+    }
+
+    private IEnumerator FadeToDaySequence()
+    {
+        isRunning = true;
+        yield return StartCoroutine(Fade(true, fadeToLightDuration));
+        isRunning = false;
+    }
+
+    private IEnumerator FullCycleSequence()
+    {
+        isRunning = true;
+        yield return StartCoroutine(Fade(false, fadeToDarkDuration));
+        yield return new WaitForSeconds(nightHoldDuration);
+        yield return StartCoroutine(Fade(true, fadeToLightDuration));
+        isRunning = false;
+    }
+
+    private IEnumerator LoadSceneSequence(string sceneName)
     {
         isRunning = true;
 
-        // Day -> Night
-        yield return StartCoroutine(Fade(false, fadeToDarkDuration));
+        Debug.Log("Loading scene: '" + sceneName + "'");
 
-        // Hold Night
-        yield return new WaitForSeconds(nightHoldDuration);
+        // Start loading in background
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        asyncLoad.allowSceneActivation = false;
 
-        // Night -> Day
-        yield return StartCoroutine(Fade(true, fadeToLightDuration));
+        // Wait until scene is ready
+        while (asyncLoad.progress < 0.9f)
+            yield return null;
+
+        // Hold in darkness before swapping
+        yield return new WaitForSeconds(sceneTransitionHoldDuration);
+
+        // Activate the scene
+        asyncLoad.allowSceneActivation = true;
+        yield return null;
+
+        // Re-grab the light from the new scene
+        if (directionalLight == null)
+            directionalLight = RenderSettings.sun;
 
         isRunning = false;
     }
 
+    // -------------------------
+    // Core fade
+    // -------------------------
+
     private IEnumerator Fade(bool toDay, float duration)
     {
-        float fromAngle = toDay ? nightAngle : dayAngle;
-        float toAngle = toDay ? dayAngle : nightAngle;
-
-        float fromIntensity = toDay ? nightIntensity : dayIntensity;
-        float toIntensity = toDay ? dayIntensity : nightIntensity;
-
-        Color fromLightColor = toDay ? nightLightColor : dayLightColor;
-        Color toLightColor = toDay ? dayLightColor : nightLightColor;
-
-        Color fromAmbient = toDay ? nightAmbientColor : dayAmbientColor;
-        Color toAmbient = toDay ? dayAmbientColor : nightAmbientColor;
+        float fromAngle      = toDay ? nightAngle        : dayAngle;
+        float toAngle        = toDay ? dayAngle          : nightAngle;
+        float fromIntensity  = toDay ? nightIntensity    : dayIntensity;
+        float toIntensity    = toDay ? dayIntensity      : nightIntensity;
+        Color fromLightColor = toDay ? nightLightColor   : dayLightColor;
+        Color toLightColor   = toDay ? dayLightColor     : nightLightColor;
+        Color fromAmbient    = toDay ? nightAmbientColor : dayAmbientColor;
+        Color toAmbient      = toDay ? dayAmbientColor   : nightAmbientColor;
 
         float elapsed = 0f;
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
 
-            float t = Mathf.SmoothStep(
-                0f,
-                1f,
-                Mathf.Clamp01(elapsed / duration));
-
-            // Rotate sun
-            float angle = Mathf.Lerp(fromAngle, toAngle, t);
-
-            directionalLight.transform.rotation =
-                Quaternion.Euler(angle, -30f, 0f);
-
-            // Sun intensity and color
-            directionalLight.intensity =
-                Mathf.Lerp(fromIntensity, toIntensity, t);
-
-            directionalLight.color =
-                Color.Lerp(fromLightColor, toLightColor, t);
-
-            // Ambient light
-            RenderSettings.ambientLight =
-                Color.Lerp(fromAmbient, toAmbient, t);
+            directionalLight.transform.rotation = Quaternion.Euler(Mathf.Lerp(fromAngle, toAngle, t), -30f, 0f);
+            directionalLight.intensity          = Mathf.Lerp(fromIntensity, toIntensity, t);
+            directionalLight.color              = Color.Lerp(fromLightColor, toLightColor, t);
+            RenderSettings.ambientLight         = Color.Lerp(fromAmbient, toAmbient, t);
 
             yield return null;
         }
 
-        // Ensure exact final values
-        directionalLight.transform.rotation =
-            Quaternion.Euler(toAngle, -30f, 0f);
-
-        directionalLight.intensity = toIntensity;
-        directionalLight.color = toLightColor;
-        RenderSettings.ambientLight = toAmbient;
+        // Snap to exact final values
+        directionalLight.transform.rotation = Quaternion.Euler(toAngle, -30f, 0f);
+        directionalLight.intensity          = toIntensity;
+        directionalLight.color              = toLightColor;
+        RenderSettings.ambientLight         = toAmbient;
     }
 }
