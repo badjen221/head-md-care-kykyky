@@ -202,6 +202,17 @@ public class DayNightCycle : MonoBehaviour
         Color fromAmbient    = toDay ? nightAmbientColor : dayAmbientColor;
         Color toAmbient      = toDay ? dayAmbientColor   : nightAmbientColor;
 
+        // Prepare objects for fade — both active during transition
+        GameObject fadeOut = toDay ? nightscape : dayscape;
+        GameObject fadeIn  = toDay ? dayscape   : nightscape;
+
+        if (fadeOut != null) fadeOut.SetActive(true);
+        if (fadeIn != null)
+        {
+            fadeIn.SetActive(true);
+            SetObjectAlpha(fadeIn, 0f);
+        }
+
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -209,10 +220,15 @@ public class DayNightCycle : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
 
+            // Fade light
             directionalLight.transform.rotation = Quaternion.Euler(Mathf.Lerp(fromAngle, toAngle, t), -30f, 0f);
             directionalLight.intensity          = Mathf.Lerp(fromIntensity, toIntensity, t);
             directionalLight.color              = Color.Lerp(fromLightColor, toLightColor, t);
             RenderSettings.ambientLight         = Color.Lerp(fromAmbient, toAmbient, t);
+
+            // Fade objects simultaneously
+            if (fadeOut != null) SetObjectAlpha(fadeOut, 1f - t);
+            if (fadeIn != null)  SetObjectAlpha(fadeIn, t);
 
             yield return null;
         }
@@ -223,19 +239,14 @@ public class DayNightCycle : MonoBehaviour
         directionalLight.color              = toLightColor;
         RenderSettings.ambientLight         = toAmbient;
 
-        // Swap day/night objects
-        if (toDay)
+        // Snap objects to final state
+        if (fadeOut != null)
         {
-            if (dayscape != null) dayscape.SetActive(true);
-            if (nightscape != null) nightscape.SetActive(false);
+            SetObjectAlpha(fadeOut, 0f);
+            fadeOut.SetActive(false);
         }
-        else
-        {
-            if (dayscape != null) dayscape.SetActive(false);
-            if (nightscape != null) nightscape.SetActive(true);
-        }
+        if (fadeIn != null) SetObjectAlpha(fadeIn, 1f);
     }
-
     private IEnumerator FadeObjects(GameObject fadeOut, GameObject fadeIn, float duration)
     {
         // Make sure both are active during transition
