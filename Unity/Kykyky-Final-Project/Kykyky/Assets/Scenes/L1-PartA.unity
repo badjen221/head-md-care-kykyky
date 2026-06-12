@@ -1843,7 +1843,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1200632832}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fc2342d095f04847832bb4956570373, type: 3}
   m_Name: 
@@ -2286,7 +2286,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1547569591}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fc2342d095f04847832bb4956570373, type: 3}
   m_Name: 
@@ -2978,11 +2978,11 @@ MonoBehaviour:
   moveSpeed: 0.3
   stoppingDistance: 0.6
   stopOnMoveStart:
-  - {fileID: 1547569592}
+  - {fileID: 1724449836}
   playOnMoveStart:
   - {fileID: 1103125495}
   playOnArrival:
-  - {fileID: 1200632834}
+  - {fileID: 1338417936}
   arrivedOnTarget: 0
   movementActivated: 0
   sceneSequence: {fileID: 1763778612}
