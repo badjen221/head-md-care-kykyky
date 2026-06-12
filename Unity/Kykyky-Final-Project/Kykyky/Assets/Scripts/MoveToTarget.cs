@@ -28,14 +28,20 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public bool movementActivated = false;
     private bool isMoving = false;
     private bool wasInputHeld = false;
+    private bool hasEverMoved = false;
     public SceneSequence sceneSequence;
     private Animator animator;
+    private FlashEffect flashEffect;
 
     void Start()
     {
-        animator = GetComponent<Animator>();  // ← this line is missing
+        animator = GetComponent<Animator>();
         if (animator == null)
             Debug.LogWarning("No Animator found on " + gameObject.name);
+
+        flashEffect = GetComponentInChildren<FlashEffect>();
+        if (flashEffect == null)
+            Debug.LogWarning("No FlashEffect found on " + gameObject.name + " or its children");
 
         SetSoundsLoopActive(playOnMoveStart, false);
         SetSoundsLoopActive(playOnArrival, false);
@@ -64,10 +70,6 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         Vector3 flatCurrent = new Vector3(currentPosition.x, 0f, currentPosition.z);
         Vector3 flatTarget = new Vector3(targetPosition.x, 0f, targetPosition.z);
         float distance = Vector3.Distance(flatCurrent, flatTarget);
-
-        // ← add these two lines
-        //Debug.Log("Distance to target: " + distance);
-        //Debug.Log("Stopping distance: " + stoppingDistance);
 
         if (distance <= stoppingDistance)
         {
@@ -100,17 +102,15 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     private void StartMoving()
     {
-        //Debug.Log("StartMoving called");
-
         if (isMoving) return;
 
         isMoving = true;
         arrivedOnTarget = false;
+        hasEverMoved = true;
 
         SetSoundsLoopActive(stopOnMoveStart, false);
         SetSoundsLoopActive(playOnMoveStart, true);
 
-        FlashEffect flashEffect = GetComponent<FlashEffect>();
         if (flashEffect != null)
             flashEffect.StopFlashing();
 
@@ -120,8 +120,6 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     private void StopMoving(bool arrived = false)
     {
-        //Debug.Log("StopMoving called with arrived = " + arrived);
-
         if (!isMoving && !arrived) return;
 
         isMoving = false;
@@ -138,8 +136,10 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             SetSoundsLoopActive(playOnArrival, true);
 
             if (animator != null)
-                animator.SetBool("isTargetArrived", true); 
-                 Debug.Log("isTargetArrived set to TRUE on " + gameObject.name); 
+            {
+                animator.SetBool("isTargetArrived", true);
+                Debug.Log("isTargetArrived set to TRUE on " + gameObject.name);
+            }
 
             if (sceneSequence != null)
                 sceneSequence.OnArrivedAtTarget();
@@ -150,9 +150,11 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         {
             SetSoundsLoopActive(stopOnMoveStart, true);
 
-            FlashEffect flashEffect = GetComponent<FlashEffect>();
-            if (flashEffect != null)
-                flashEffect.StartFlashing();
+            if (!hasEverMoved)
+            {
+                if (flashEffect != null)
+                    flashEffect.StartFlashing();
+            }
         }
     }
 
