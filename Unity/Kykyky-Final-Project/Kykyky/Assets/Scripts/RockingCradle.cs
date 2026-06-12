@@ -4,27 +4,23 @@ using System.Collections;
 public class RockingCradle : MonoBehaviour
 {
     [Header("Rocking Settings")]
-    public float rockAngle     = 15f;   // max degrees to rock side to side
-    public float rockSpeed     = 1.5f;  // how fast it rocks
-    public int   rockCycles    = 20;     // how many back-and-forth swings before stopping
+    public float rockAngle   = 15f;
+    public float rockSpeed   = 1.5f;
+    public int   rockCycles  = 20;
+    public bool  rockOnStart = true; // ← untick in Inspector to prevent rocking at start
 
     [Header("Pivot")]
-    // If your cradle's pivot point is not at the bottom center,
-    // create an empty parent GameObject at the pivot and attach this script there
-    public bool useSmoothStop = true;   // gradually slows down at the end
+    public bool useSmoothStop = true;
 
-    private bool     isRocking   = false;
-    private Coroutine rockRoutine = null;
-
-    private Quaternion initialRotation;  // add this field
+    private bool      isRocking      = false;
+    private Coroutine rockRoutine    = null;
+    private Quaternion initialRotation;
 
     // ── Public trigger ────────────────────────────────────────────
-    // Call this from anywhere: other scripts, UI buttons, triggers
     public void StartRocking()
     {
-        if (isRocking) return;          // already rocking, ignore
+        if (isRocking) return;
         rockRoutine = StartCoroutine(RockCoroutine());
-      
     }
 
     public void StopRocking()
@@ -35,55 +31,52 @@ public class RockingCradle : MonoBehaviour
             rockRoutine = null;
         }
         isRocking = false;
-
-        // Snap back to rest position smoothly
         StartCoroutine(ReturnToRest());
+    }
+
+    void Awake()
+    {
+        // Cache rotation even when script is disabled
+        initialRotation = transform.localRotation;
     }
 
     void Start()
     {
-        initialRotation = transform.localRotation;  // cache whatever rotation it has in the scene
-        StartRocking();
+        if (rockOnStart)
+            StartRocking();
     }
 
     // ── Core rocking coroutine ────────────────────────────────────
     IEnumerator RockCoroutine()
     {
         isRocking = true;
-
-        float elapsed    = 0f;
-        float totalTime  = rockCycles / rockSpeed; // total duration based on cycles
+        float elapsed   = 0f;
+        float totalTime = rockCycles / rockSpeed;
 
         while (elapsed < totalTime)
         {
             elapsed += Time.deltaTime;
 
-            // Progress 0→1 over the full rocking duration
             float progress = elapsed / totalTime;
-
-            // Envelope: starts at 1, fades to 0 at the end for natural slowdown
             float envelope = useSmoothStop
                 ? Mathf.SmoothStep(1f, 0f, progress)
                 : 1f;
 
-            // Sine wave drives the back-and-forth
             float angle = Mathf.Sin(elapsed * rockSpeed * Mathf.PI * 2f)
-                          * rockAngle
-                          * envelope;
+                * rockAngle
+                * envelope;
 
             transform.localRotation = initialRotation * Quaternion.Euler(0f, 0f, angle);
 
             yield return null;
         }
 
-        // Settle back to exactly zero
         yield return StartCoroutine(ReturnToRest());
-
         isRocking   = false;
         rockRoutine = null;
     }
 
-    // Smoothly returns cradle to upright rest position
+    // ── Smoothly returns cradle to upright rest position ──────────
     IEnumerator ReturnToRest()
     {
         Quaternion startRot = transform.localRotation;
