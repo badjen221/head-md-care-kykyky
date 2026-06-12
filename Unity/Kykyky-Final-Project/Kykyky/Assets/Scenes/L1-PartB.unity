@@ -249,7 +249,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 130365580}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fc2342d095f04847832bb4956570373, type: 3}
   m_Name: 
@@ -383,7 +383,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 161727240}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fc2342d095f04847832bb4956570373, type: 3}
   m_Name: 
@@ -660,7 +660,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 315839226}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fc2342d095f04847832bb4956570373, type: 3}
   m_Name: 
@@ -1268,12 +1268,11 @@ MonoBehaviour:
   moveSpeed: 0.2
   stoppingDistance: 0.2
   stopOnMoveStart:
-  - {fileID: 1927321262}
+  - {fileID: 2146142599}
   playOnMoveStart:
-  - {fileID: 161727241}
+  - {fileID: 1302671342}
   playOnArrival:
   - {fileID: 776169587}
-  - {fileID: 130365582}
   arrivedOnTarget: 0
   movementActivated: 0
   sceneSequence: {fileID: 459597737}
@@ -1337,7 +1336,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &776169587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2995,7 +2994,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1927321261}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fc2342d095f04847832bb4956570373, type: 3}
   m_Name: 
