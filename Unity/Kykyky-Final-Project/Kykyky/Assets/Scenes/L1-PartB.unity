@@ -912,7 +912,7 @@ MonoBehaviour:
   targetCamera: {fileID: 1644242491}
   zoomOutPercent: 50
   zoomDuration: 5
-  returnDuration: 10
+  returnDuration: 5
   nextSceneName: 
   fadeFromNightToDayOnStart: 1
   fadeOutDelay: 2

@@ -3264,7 +3264,7 @@ MonoBehaviour:
   targetCamera: {fileID: 785359}
   zoomOutPercent: 50
   zoomDuration: 5
-  returnDuration: 10
+  returnDuration: 5
   nextSceneName: L1-PartB
   fadeFromNightToDayOnStart: 0
   fadeOutDelay: 2
