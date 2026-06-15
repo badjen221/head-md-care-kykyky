@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class LogoColorFlashSequential : MonoBehaviour
 {
-    public float flashDuration = 0.2f;   // how long each letter stays dark
+    public float flashDuration = 0.2f;   // how long each letter stays flashed
     public float delayBetween = 0.3f;    // pause before the next letter flashes
 
-    public Color darkColor = new Color(0.05f, 0.05f, 0.05f);
+    public Color flashColor = Color.white;   // was darkColor — now white
 
     private Renderer rend;
     private Color[] brightColors;
@@ -31,7 +31,7 @@ public class LogoColorFlashSequential : MonoBehaviour
         {
             timer = 0f;
             flashing = true;
-            rend.materials[activeIndex].color = darkColor;
+            rend.materials[activeIndex].color = flashColor;
         }
         else if (flashing && timer >= flashDuration)
         {
