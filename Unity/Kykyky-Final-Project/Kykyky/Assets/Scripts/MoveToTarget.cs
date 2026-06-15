@@ -49,6 +49,8 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     void Update()
     {
+        if (arrivedOnTarget) return; // ← block movement loop after arrival
+
         if (movementActivated)
         {
             bool inputHeld = IsGlobalInputHeld();
@@ -86,7 +88,9 @@ public class MoveToTarget : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!movementActivated)
+       if (arrivedOnTarget) return; // ← block click after arrival
+
+       if (!movementActivated)
         {
             movementActivated = true;
         }
