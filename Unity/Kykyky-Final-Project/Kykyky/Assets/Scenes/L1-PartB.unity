@@ -914,8 +914,7 @@ MonoBehaviour:
   zoomDuration: 5
   returnDuration: 5
   nextSceneName: 
-  fadeFromNightToDayOnStart: 1
-  fadeOutDelay: 2
+  screenFadeOutDelay: 0.1
 --- !u!114 &459597738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -941,11 +940,15 @@ MonoBehaviour:
   nightLightColor: {r: 0.05, g: 0.05, b: 0.15, a: 1}
   dayAmbientColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   nightAmbientColor: {r: 0.02, g: 0.02, b: 0.05, a: 1}
-  dayBackgroundColor: {r: 0.5, g: 0.7, b: 1, a: 1}
+  dayBackgroundColor: {r: 0.25882354, g: 0.62352943, b: 0.7254902, a: 0}
   nightBackgroundColor: {r: 0, g: 0, b: 0.05, a: 1}
   dayscape: {fileID: 0}
   nightscape: {fileID: 0}
   objectFadeDuration: 2
+  lampLight: {fileID: 863865551}
+  lampDayIntensity: 0
+  lampNightIntensity: 1
+  startAtNight: 1
 --- !u!4 &459597739
 Transform:
   m_ObjectHideFlags: 0
