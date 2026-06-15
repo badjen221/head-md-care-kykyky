@@ -1831,7 +1831,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.211
+  m_Volume: 0.08
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2214,7 +2214,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2764,7 +2764,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2933,6 +2933,7 @@ MonoBehaviour:
   zoomDuration: 5
   returnDuration: 5
   nextSceneName: L1-PartB
+  preTransitionHoldDuration: 0
   fadeToDarkOnArrival: 1
   screenFadeOutDelay: 0
 --- !u!1 &1764242128 stripped
@@ -2985,6 +2986,7 @@ MonoBehaviour:
   stopOnMoveStart:
   - {fileID: 1724449836}
   playOnMoveStart:
+  - {fileID: 1103125495}
   - {fileID: 1103125495}
   playOnArrival:
   - {fileID: 1338417936}
