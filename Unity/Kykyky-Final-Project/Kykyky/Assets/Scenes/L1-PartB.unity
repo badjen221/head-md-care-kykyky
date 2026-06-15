@@ -913,7 +913,8 @@ MonoBehaviour:
   zoomOutPercent: 50
   zoomDuration: 5
   returnDuration: 5
-  nextSceneName: 
+  nextSceneName: L0-Intro
+  preTransitionHoldDuration: 5
   fadeToDarkOnArrival: 0
   screenFadeOutDelay: 0.1
 --- !u!114 &459597738
