@@ -914,6 +914,7 @@ MonoBehaviour:
   zoomDuration: 5
   returnDuration: 5
   nextSceneName: 
+  fadeToDarkOnArrival: 0
   screenFadeOutDelay: 0.1
 --- !u!114 &459597738
 MonoBehaviour:
