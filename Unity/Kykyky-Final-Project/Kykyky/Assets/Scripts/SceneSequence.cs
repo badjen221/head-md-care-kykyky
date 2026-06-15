@@ -15,9 +15,9 @@ public class SceneSequence : MonoBehaviour
     [Header("Scene Transition")]
     public string nextSceneName = "";
 
-    [Header("Scene Entry — tick ON if this scene starts at night and should fade to day")]
-    public bool fadeFromNightToDayOnStart = false;
-    public float fadeOutDelay = 2f; // ← delay before fade out starts
+    [Header("Scene Entry")]
+    [Tooltip("Set > 0 to fade out the black screen after this many seconds. Leave 0 for no fade out.")]
+    public float screenFadeOutDelay = 0f;
 
     private CameraFollowActor cameraFollow;
     private Vector3    initialCameraPosition;
@@ -39,14 +39,9 @@ public class SceneSequence : MonoBehaviour
             ? targetCamera.orthographicSize
             : targetCamera.fieldOfView;
 
-        // If this scene starts at night, fade to day automatically
-        if (fadeFromNightToDayOnStart)
+        // Fade out black screen on scene entry if delay is set
+        if (screenFadeOutDelay > 0f)
         {
-            if (DayNightCycle.Instance != null)
-                DayNightCycle.Instance.FadeToDay();
-            else
-                Debug.LogWarning("DayNightCycle instance not found.");
-
             if (ScreenFader.Instance != null)
                 StartCoroutine(DelayedFadeOut());
             else
@@ -56,17 +51,14 @@ public class SceneSequence : MonoBehaviour
 
     public void OnArrivedAtTarget()
     {
-        // Trigger rocking object — completely optional
         if (rockingObject != null)
             rockingObject.StartRocking();
 
-        // Trigger camera sequence
         if (targetCamera != null)
             StartCoroutine(CameraSequence());
         else
             Debug.LogWarning("No camera found!");
 
-        // Start day/night and transition after camera finishes
         if (DayNightCycle.Instance != null)
         {
             if (string.IsNullOrEmpty(nextSceneName))
@@ -80,11 +72,9 @@ public class SceneSequence : MonoBehaviour
 
     IEnumerator CameraSequence()
     {
-        // Step 1 — disable follow script so we take full control
         if (cameraFollow != null)
             cameraFollow.enabled = false;
 
-        // Step 2 — zoom out
         float startValue     = targetCamera.orthographic
             ? targetCamera.orthographicSize
             : targetCamera.fieldOfView;
@@ -105,10 +95,8 @@ public class SceneSequence : MonoBehaviour
             yield return null;
         }
 
-        // Step 3 — hold zoomed out for a moment
         yield return new WaitForSeconds(1f);
 
-        // Step 4 — return to initial position, rotation and FOV/size
         elapsed = 0f;
         Vector3    fromPosition = targetCamera.transform.position;
         Quaternion fromRotation = targetCamera.transform.rotation;
@@ -132,7 +120,6 @@ public class SceneSequence : MonoBehaviour
             yield return null;
         }
 
-        // Lock to exact final values
         targetCamera.transform.position = initialCameraPosition;
         targetCamera.transform.rotation = initialCameraRotation;
 
@@ -144,40 +131,28 @@ public class SceneSequence : MonoBehaviour
 
     IEnumerator FadeAndLoad(string sceneName)
     {
-        // Wait for camera sequence to fully finish first
         float totalCameraDuration = zoomDuration + 1f + returnDuration;
         yield return new WaitForSeconds(totalCameraDuration);
 
-        // Fade light to dark first
         DayNightCycle.Instance.FadeToDark();
-
-        // Wait for day/night fade to fully finish
         yield return new WaitUntil(() => !DayNightCycle.Instance.IsRunning);
 
-        // Start loading scene in background BEFORE fading to black
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
         asyncLoad.allowSceneActivation = false;
 
-        // Fade screen to black while scene loads in background
         if (ScreenFader.Instance != null)
             ScreenFader.Instance.FadeIn();
 
-        // Wait for BOTH black fade and scene load to finish
         yield return new WaitUntil(() =>
-            (!ScreenFader.Instance.IsFading) &&
+            !ScreenFader.Instance.IsFading &&
             asyncLoad.progress >= 0.9f);
 
-        // Hold in black just briefly
-        yield return new WaitForSeconds(DayNightCycle.Instance.sceneTransitionHoldDuration);
-
-        // Activate scene — already loaded, switches instantly
         asyncLoad.allowSceneActivation = true;
     }
 
     IEnumerator DelayedFadeOut()
     {
-        yield return new WaitForSeconds(fadeOutDelay); // ← adjust this
+        yield return new WaitForSeconds(screenFadeOutDelay);
         ScreenFader.Instance.FadeOut();
     }
-    
 }

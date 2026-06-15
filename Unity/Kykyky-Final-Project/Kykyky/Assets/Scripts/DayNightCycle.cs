@@ -47,6 +47,9 @@ public class DayNightCycle : MonoBehaviour
     public float lampDayIntensity   = 0f;
     public float lampNightIntensity = 1f;
 
+    [Header("Scene Entry")]
+    public bool startAtNight = false; // ← tick ON in Scene B
+
     private bool isRunning = false;
     private Camera mainCamera;
 
@@ -71,7 +74,10 @@ public class DayNightCycle : MonoBehaviour
             return;
         }
 
-        SetDayState();
+        if (startAtNight)
+            SetNightState();
+        else
+            SetDayState();
     }
 
     // -------------------------
@@ -85,9 +91,7 @@ public class DayNightCycle : MonoBehaviour
         directionalLight.color = dayLightColor;
         RenderSettings.ambientLight = dayAmbientColor;
         if (mainCamera != null) mainCamera.backgroundColor = dayBackgroundColor;
-
         if (lampLight != null) lampLight.intensity = lampDayIntensity;
-
         if (dayscape != null) dayscape.SetActive(true);
         if (nightscape != null) nightscape.SetActive(false);
     }
@@ -99,9 +103,7 @@ public class DayNightCycle : MonoBehaviour
         directionalLight.color = nightLightColor;
         RenderSettings.ambientLight = nightAmbientColor;
         if (mainCamera != null) mainCamera.backgroundColor = nightBackgroundColor;
-
         if (lampLight != null) lampLight.intensity = lampNightIntensity;
-
         if (dayscape != null) dayscape.SetActive(false);
         if (nightscape != null) nightscape.SetActive(true);
     }
@@ -110,39 +112,30 @@ public class DayNightCycle : MonoBehaviour
     // Public methods
     // -------------------------
 
-    /// Day -> Night only
-    /// DayNightCycle.Instance.FadeToDark();
     public void FadeToDark()
     {
         if (!isRunning)
             StartCoroutine(FadeToDarkSequence());
     }
 
-    /// Night -> Day only
-    /// DayNightCycle.Instance.FadeToDay();
     public void FadeToDay()
     {
         if (!isRunning)
             StartCoroutine(FadeToDaySequence());
     }
 
-    /// Day -> Night -> Day (no scene load)
-    /// DayNightCycle.Instance.PlayFullCycle();
     public void PlayFullCycle()
     {
         if (!isRunning)
             StartCoroutine(FullCycleSequence());
     }
 
-    /// Load a scene while already dark
-    /// DayNightCycle.Instance.LoadScene("SceneName");
     public void LoadScene(string sceneName)
     {
         if (!isRunning)
             StartCoroutine(LoadSceneSequence(sceneName));
     }
 
-    /// Check if a fade or load is currently running
     public bool IsRunning => isRunning;
 
     // -------------------------
@@ -176,8 +169,6 @@ public class DayNightCycle : MonoBehaviour
     {
         isRunning = true;
 
-        Debug.Log("Loading scene: '" + sceneName + "'");
-
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         asyncLoad.allowSceneActivation = false;
 
@@ -189,7 +180,6 @@ public class DayNightCycle : MonoBehaviour
         asyncLoad.allowSceneActivation = true;
         yield return null;
 
-        // Re-grab camera and light from new scene
         mainCamera = Camera.main;
         if (directionalLight == null)
             directionalLight = RenderSettings.sun;
@@ -203,20 +193,19 @@ public class DayNightCycle : MonoBehaviour
 
     private IEnumerator Fade(bool toDay, float duration)
     {
-        float fromAngle      = toDay ? nightAngle        : dayAngle;
-        float toAngle        = toDay ? dayAngle          : nightAngle;
-        float fromIntensity  = toDay ? nightIntensity    : dayIntensity;
-        float toIntensity    = toDay ? dayIntensity      : nightIntensity;
-        Color fromLightColor = toDay ? nightLightColor   : dayLightColor;
-        Color toLightColor   = toDay ? dayLightColor     : nightLightColor;
-        Color fromAmbient    = toDay ? nightAmbientColor : dayAmbientColor;
-        Color toAmbient      = toDay ? dayAmbientColor   : nightAmbientColor;
-        Color fromBackground = toDay ? nightBackgroundColor : dayBackgroundColor;
-        Color toBackground   = toDay ? dayBackgroundColor   : nightBackgroundColor;
+        float fromAngle         = toDay ? nightAngle         : dayAngle;
+        float toAngle           = toDay ? dayAngle           : nightAngle;
+        float fromIntensity     = toDay ? nightIntensity     : dayIntensity;
+        float toIntensity       = toDay ? dayIntensity       : nightIntensity;
+        Color fromLightColor    = toDay ? nightLightColor    : dayLightColor;
+        Color toLightColor      = toDay ? dayLightColor      : nightLightColor;
+        Color fromAmbient       = toDay ? nightAmbientColor  : dayAmbientColor;
+        Color toAmbient         = toDay ? dayAmbientColor    : nightAmbientColor;
+        Color fromBackground    = toDay ? nightBackgroundColor : dayBackgroundColor;
+        Color toBackground      = toDay ? dayBackgroundColor   : nightBackgroundColor;
         float fromLampIntensity = toDay ? lampNightIntensity : lampDayIntensity;
         float toLampIntensity   = toDay ? lampDayIntensity   : lampNightIntensity;
 
-        // Prepare objects for fade — both active during transition
         GameObject fadeOut = toDay ? nightscape : dayscape;
         GameObject fadeIn  = toDay ? dayscape   : nightscape;
 
@@ -234,28 +223,20 @@ public class DayNightCycle : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
 
-            // Fade light
             directionalLight.transform.rotation = Quaternion.Euler(Mathf.Lerp(fromAngle, toAngle, t), -30f, 0f);
             directionalLight.intensity          = Mathf.Lerp(fromIntensity, toIntensity, t);
             directionalLight.color              = Color.Lerp(fromLightColor, toLightColor, t);
             RenderSettings.ambientLight         = Color.Lerp(fromAmbient, toAmbient, t);
-
-            // Fade background color
             if (mainCamera != null)
-                mainCamera.backgroundColor = Color.Lerp(fromBackground, toBackground, t);
-
-            // Fade lamp simultaneously
+                mainCamera.backgroundColor      = Color.Lerp(fromBackground, toBackground, t);
             if (lampLight != null)
-                lampLight.intensity = Mathf.Lerp(fromLampIntensity, toLampIntensity, t);
-
-            // Fade objects simultaneously
+                lampLight.intensity             = Mathf.Lerp(fromLampIntensity, toLampIntensity, t);
             if (fadeOut != null) SetObjectAlpha(fadeOut, 1f - t);
             if (fadeIn != null)  SetObjectAlpha(fadeIn, t);
 
             yield return null;
         }
 
-        // Snap to exact final values
         directionalLight.transform.rotation = Quaternion.Euler(toAngle, -30f, 0f);
         directionalLight.intensity          = toIntensity;
         directionalLight.color              = toLightColor;
@@ -263,7 +244,6 @@ public class DayNightCycle : MonoBehaviour
         if (mainCamera != null) mainCamera.backgroundColor = toBackground;
         if (lampLight != null) lampLight.intensity = toLampIntensity;
 
-        // Snap objects to final state
         if (fadeOut != null)
         {
             SetObjectAlpha(fadeOut, 0f);
@@ -275,35 +255,6 @@ public class DayNightCycle : MonoBehaviour
     // -------------------------
     // Object alpha helpers
     // -------------------------
-
-    private IEnumerator FadeObjects(GameObject fadeOut, GameObject fadeIn, float duration)
-    {
-        if (fadeOut != null) fadeOut.SetActive(true);
-        if (fadeIn != null)
-        {
-            fadeIn.SetActive(true);
-            SetObjectAlpha(fadeIn, 0f);
-        }
-
-        float elapsed = 0f;
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
-
-            if (fadeOut != null) SetObjectAlpha(fadeOut, 1f - t);
-            if (fadeIn != null)  SetObjectAlpha(fadeIn, t);
-
-            yield return null;
-        }
-
-        if (fadeOut != null)
-        {
-            SetObjectAlpha(fadeOut, 0f);
-            fadeOut.SetActive(false);
-        }
-        if (fadeIn != null) SetObjectAlpha(fadeIn, 1f);
-    }
 
     private void SetObjectAlpha(GameObject obj, float alpha)
     {
