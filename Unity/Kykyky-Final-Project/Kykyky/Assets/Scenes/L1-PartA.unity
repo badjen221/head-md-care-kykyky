@@ -2933,6 +2933,7 @@ MonoBehaviour:
   zoomDuration: 5
   returnDuration: 5
   nextSceneName: L1-PartB
+  fadeToDarkOnArrival: 1
   screenFadeOutDelay: 0
 --- !u!1 &1764242128 stripped
 GameObject:
