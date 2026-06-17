@@ -86,7 +86,6 @@ To ground the project in real experiences of cohabitation, we conducted field in
 
 Together, these stories confirmed that cohabitation rests less on individual ownership than on **shared care and mutual responsibility**, and that the physical environment itself shapes the safety and well-being of the animals.
 
-→ See [`field-research.md`](field-research.md) for the full interviews and questionnaire results.
 
 ---
 
@@ -97,6 +96,7 @@ We gathered existing animations to represent the three main characters and the k
 
 ### Stop Motion Video
 The paper pieces were moved and staged to create a **stop motion video**, helping us walk through the key moments of the story and explain it clearly for the presentation: the first encounters, the rising tensions, and the turning point when Lucky falls ill.
+
 > *[Video StopMotion.](https://youtu.be/wAEkrmppK8c)*
 
 ### Greybox Prototype
@@ -128,4 +128,5 @@ If selected for exhibition, the following developments would be carried out:
 ## Credits
 
 Maria Sarafi · Rokhy Niang · Zainab Ouriachi
+
 Master Media Design 1 — Care Workshop, HEAD Genève, 2026

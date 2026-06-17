@@ -101,6 +101,14 @@ If selected for exhibition, the following developments would be carried out:
 
 ---
 
+## PDF Presentation
+
+[Presentaion Care Kykyky](Press/2026-06-12-head-mmd1-care-Kykyky.pdf)
+
+## Demo Final Video
+
+[Kykyky Demo](https://youtu.be/CpgLlgdLHM8)
+
 ## Credits
 
 Maria Sarafi · Rokhy Niang · Zainab Ouriachi
