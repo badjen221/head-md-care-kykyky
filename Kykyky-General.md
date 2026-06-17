@@ -6,6 +6,8 @@ Maria Sarafi · Rokhy Niang · Zainab Ouriachi
 
 ---
 
+![alt text](Process/2026-06-11-Kykyky/Kykyky-2026-06-15.png)
+
 ## Overview
 
 **Kykyky !** is an interactive, wordless experience for children aged 4–8 that explores cohabitation through the story of three roommates sharing the same apartment: baby **Rokhy**, **Lucky** the dog, and **Cheeky** the cat.
@@ -65,8 +67,6 @@ To ground the project in real experiences of cohabitation, we conducted field in
 
 Together, these stories confirmed that cohabitation rests less on individual ownership than on **shared care and mutual responsibility**, and that the physical environment itself shapes the safety and well-being of the animals.
 
-→ See [`field-research.md`](field-research.md) for the full interviews and questionnaire results.
-
 ---
 
 ## Process
@@ -82,6 +82,8 @@ Testing ran in three phases:
 1. **Paper prototype** — presented to the library team for early feedback; this confirmed the decision to develop a children's interactive experience.
 2. **Grey boxing** — tested with classmates in class, with dedicated feedback sessions on scene setup, interactions, and camera angle.
 3. **Production** — daily feedback applied continuously. Based on this, sound was recorded twice (the second time in a quiet box) and motion capture carried out twice to refine and smooth both sound and animation. Extensive work also went into rigging a 3D animal model so motion capture could drive the final animation of the dog.
+
+![alt text](Process/2026-06-11-Kykyky/IMG_6335.jpeg)
 
 ---
 
@@ -100,4 +102,5 @@ If selected for exhibition, the following developments would be carried out:
 ## Credits
 
 Maria Sarafi · Rokhy Niang · Zainab Ouriachi
+
 Master Media Design 1 — Care Workshop, HEAD Genève, 2026
