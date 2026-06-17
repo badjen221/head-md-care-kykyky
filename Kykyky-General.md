@@ -1,7 +1,9 @@
 # Kykyky !
 
 **Master Media Design 1 — Care Workshop — HEAD Genève**
+
 Maria Sarafi · Rokhy Niang · Zainab Ouriachi
+
 2026-06-16
 
 ---
