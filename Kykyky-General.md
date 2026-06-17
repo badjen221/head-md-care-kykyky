@@ -107,7 +107,7 @@ If selected for exhibition, the following developments would be carried out:
 
 ## Demo Final Video
 
-[Kykyky Demo](https://youtu.be/CpgLlgdLHM8)
+[Kykyky Demo](https://youtu.be/d_SC7Zuwfw0)
 
 ## Credits
 
